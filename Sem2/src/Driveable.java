@@ -1,0 +1,3 @@
+interface Drivable{
+    void drive();
+}

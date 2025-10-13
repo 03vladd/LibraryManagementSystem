@@ -1,13 +1,42 @@
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-void main() {
-    //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-    // to see how IntelliJ IDEA suggests fixing it.
-    IO.println(String.format("Hello and welcome!"));
+import java.util.ArrayList;
+import java.util.List;
 
-    for (int i = 1; i <= 5; i++) {
-        //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-        // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-        IO.println("i = " + i);
+public class Main {
+    public static void main(String[] args) {
+        //1.
+        ArrayList<Animal> animals = new ArrayList<>();
+        Dog dog = new Dog("Dawg");
+
+        //2.
+        Car car = new Car();
+        car.drive();
+
+        //3.
+        Student student1 = new Student("A");
+        Student student2 = new Student("B");
+        Student student3 = new Student("C");
+
+        List<Student> studentList = new ArrayList<>();
+
+        studentList.add(student1);
+        studentList.add(student2);
+        studentList.add(student3);
+
+        Teacher teacher = new Teacher(studentList);
+
+        teacher.printStudents();
+
+        //4.
+        Truck truck1 = new Truck("MAN");
+        truck1.drive();
+
+        Truck truck2 = new Truck("ROMAN");
+        truck2.drive();
+
+        Bicycle bicycle = new Bicycle();
+
+        bicycle.drive();
+
+
     }
 }
