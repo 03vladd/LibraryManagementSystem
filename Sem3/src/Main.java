@@ -1,3 +1,6 @@
+import TV.TV;
+import TV.Kanal;
+import TV.Remote;
 import songs.Playlist;
 import songs.Song;
 import spielkarte.*;
@@ -28,6 +31,21 @@ public class Main {
         for (SpielkarteEnum c : deckEnum) {
             System.out.println(c);
         }
+
+        TV tv = new TV();
+        tv.add(new Kanal("Kanal 1"));
+        tv.add(new Kanal("Kanal 2"));
+        tv.add(new Kanal("Kanal 3"));
+        tv.add(new Kanal("Kanal 4"));
+
+        Remote remote = new Remote(tv);
+
+        remote.channelDown();
+        remote.channelUp();
+        remote.channelDown();
+        remote.channelDown();
+
+
     }
 
 
