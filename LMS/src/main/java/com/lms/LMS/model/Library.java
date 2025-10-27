@@ -1,14 +1,31 @@
 package com.lms.LMS.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Library {
     private String id;
     private String name;
-    private List<Member> members;
-    private List<ReadableItems> ReadableItems;
+    private String address;
+    private List<ReadableItems> readableItems;
 
+    // NEW PROPERTIES ADDED
+    private String phoneNumber;
+    private String email;
 
+    // Constructor
+    public Library() {
+        this.readableItems = new ArrayList<>();
+    }
+
+    public Library(String id, String name, String address) {
+        this.id = id;
+        this.name = name;
+        this.address = address;
+        this.readableItems = new ArrayList<>();
+    }
+
+    // Getters and Setters
     public String getId() {
         return id;
     }
@@ -25,19 +42,40 @@ public class Library {
         this.name = name;
     }
 
-    public List<Member> getMembers() {
-        return members;
+    public String getAddress() {
+        return address;
     }
 
-    public void setMembers(List<Member> members) {
-        this.members = members;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public List<ReadableItems> getReadableItems() {
-        return ReadableItems;
+        return readableItems;
     }
 
     public void setReadableItems(List<ReadableItems> readableItems) {
-        ReadableItems = readableItems;
+        this.readableItems = readableItems;
     }
+
+    public void addReadableItem(ReadableItems item) {
+        this.readableItems.add(item);
+    }
+
+    // NEW GETTERS AND SETTERS
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+}
 }
