@@ -49,6 +49,8 @@ public class Main {
         System.out.println("4. Maximale abgerundete Note: " + maxAbgerundet);
         System.out.println("   Expected: 85");
 
+        //System.out.println(noteHandler.nichtAusreichend(noteHandler.abgerundeteNoten(notenListe)));
+
         // Additional test cases
         System.out.println("\n--- Additional Rounding Tests ---");
         ArrayList<Note> roundingTests = createNoteList(new int[]{73, 67, 38, 33});

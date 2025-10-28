@@ -46,14 +46,12 @@ public class Shop {
 
     //4. maximalen Geldbetrag ausgeben der für eine Tastatur und einen USB Stick ausgegeben werden kann
     public int maximalerGeldbetrag(List<Tastatur> tastaturen, List<USB> usbs, int budget) {
-        int max = Integer.MIN_VALUE;
+        int max = -1;
         for (Tastatur t : tastaturen) {
             for (USB u : usbs) {
                 int sum = t.preis + u.preis;
                 if (sum > max && sum <= budget) {
                     max = sum;
-                } else {
-                    max = -1;
                 }
             }
         }
