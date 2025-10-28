@@ -3,14 +3,14 @@
 ## Project Overview
 This is a Library Management System built with Spring Boot for managing books, magazines, members, loans, and reservations.
 
-*Course:* Object-Oriented Programming  
+*Course:* Object-Oriented Programming in Java 
 *Project:* Phase 1 - Basic Structure (In-Memory Storage)  
 *Team Members:* Vlad & Rares
 
 ---
 
 ## Technologies Used
-- *Java 17*
+- *Java 25*
 - *Spring Boot 3.x*
 - *Maven*
 - *In-Memory Storage* (HashMap collections)
