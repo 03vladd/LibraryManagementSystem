@@ -1,13 +1,16 @@
 package com.lms.LMS.model;
 
+import java.util.Date;
+
 import java.awt.*;
 
+import java.util.Date;
 import java.util.List;
 
 public class Loan {
     private String id;
     private String memberId;
-    private String date; //to change
+    private Date date;
     private List<Reservation> reservations;
     private List<ReadableItems> Items;
 
@@ -27,11 +30,11 @@ public class Loan {
         this.memberId = memberId;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 }
