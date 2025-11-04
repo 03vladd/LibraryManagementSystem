@@ -7,7 +7,7 @@ import java.util.List;
 public class Loan {
     private String id;
     private String memberId;
-    private String date;
+    private String date; //to change
     private List<Reservation> reservations;
     private List<ReadableItems> Items;
 
