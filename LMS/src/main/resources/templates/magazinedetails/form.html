@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add New Magazine</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            max-width: 600px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .btn {
+            padding: 10px 20px;
+            margin: 5px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .btn-primary {
+            background-color: #E91E63;
+            color: white;
+        }
+        .btn-secondary {
+            background-color: #808080;
+            color: white;
+        }
+        .btn:hover {
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+<h1>Add New Magazine</h1>
+
+<form th:action="@{/magazines}" th:object="${magazine}" method="post">
+
+    <div class="form-group">
+        <label for="id">ID:</label>
+        <input type="text" id="id" th:field="*{id}" required />
+    </div>
+
+    <div class="form-group">
+        <label for="title">Title:</label>
+        <input type="text" id="title" th:field="*{title}" required />
+    </div>
+
+    <div class="form-group">
+        <label for="publisher">Publisher:</label>
+        <input type="text" id="publisher" th:field="*{publisher}" required />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save Magazine</button>
+    <a href="/magazines" class="btn btn-secondary">Cancel</a>
+
+</form>
+
+</body>
+</html>
