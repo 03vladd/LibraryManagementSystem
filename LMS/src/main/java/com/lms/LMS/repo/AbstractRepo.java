@@ -13,7 +13,7 @@ public interface AbstractRepo<T> {
 
     boolean existsById(String id);
 
-    void deleteById(String id);
+    boolean deleteById(String id);
 
     long count();
 }

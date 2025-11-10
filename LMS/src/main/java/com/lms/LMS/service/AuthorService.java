@@ -38,9 +38,10 @@ public class AuthorService {
 
     // Search authors by name
     public List<Author> searchAuthorsByName(String name) {
-        return authorRepo.findByNameContaining(name);
+        return authorRepo.findAll().stream()
+                .filter(a -> a.getName().toLowerCase().contains(name.toLowerCase()))
+                .toList();
     }
-
     // Add book to author
     public Author addBookToAuthor(String authorId, BookAuthor bookAuthor) {
         Optional<Author> authorOpt = authorRepo.findById(authorId);

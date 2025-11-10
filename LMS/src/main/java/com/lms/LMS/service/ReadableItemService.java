@@ -38,12 +38,16 @@ public class ReadableItemService {
 
     // Get items by status
     public List<ReadableItems> getItemsByStatus(String status) {
-        return readableItemRepo.findByStatus(status);
+        return readableItemRepo.findAll().stream()
+                .filter(item -> item.getStatus().toString().equals(status))
+                .toList();
     }
 
     // Get item by barcode
     public Optional<ReadableItems> getItemByBarcode(String barcode) {
-        return readableItemRepo.findByBarcode(barcode);
+        return readableItemRepo.findAll().stream()
+                .filter(item -> item.getBarcode().equals(barcode))
+                .findFirst();
     }
 
     // Update item status
@@ -59,7 +63,9 @@ public class ReadableItemService {
 
     // Get available items
     public List<ReadableItems> getAvailableItems() {
-        return readableItemRepo.findByStatus("Available");
+        return readableItemRepo.findAll().stream()
+                .filter(item -> item.getStatus().toString().equals("Available"))
+                .toList();
     }
 
     // Get total items count

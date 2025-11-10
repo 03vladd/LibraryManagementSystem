@@ -38,7 +38,9 @@ public class BookDetailsService {
 
     // Search books by title
     public List<BookDetails> searchBooksByTitle(String title) {
-        return bookDetailsRepo.findByTitleContaining(title);
+        return bookDetailsRepo.findAll().stream()
+                .filter(b -> b.getTitle().toLowerCase().contains(title.toLowerCase()))
+                .toList();
     }
 
     // Add author to book

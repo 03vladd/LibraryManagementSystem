@@ -38,12 +38,16 @@ public class ReservationService {
 
     // Get reservations by member ID
     public List<Reservation> getReservationsByMemberId(String memberId) {
-        return reservationRepo.findByMemberId(memberId);
+        return reservationRepo.findAll().stream()
+                .filter(r -> r.getMemberId().equals(memberId))
+                .toList();
     }
 
     // Get reservation by readable item ID
     public Optional<Reservation> getReservationByReadableItemId(String readableItemId) {
-        return reservationRepo.findByReadableItemId(readableItemId);
+        return reservationRepo.findAll().stream()
+                .filter(r -> r.getReadableItemId().equals(readableItemId))
+                .findFirst();
     }
 
     // Cancel reservation

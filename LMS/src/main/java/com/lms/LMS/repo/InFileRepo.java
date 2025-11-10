@@ -108,10 +108,13 @@ public class InFileRepo<T> implements AbstractRepo<T> {
     }
 
     @Override
-    public void deleteById(String id) {
+    public boolean deleteById(String id) {
         List<T> entities = loadAllFromFile();
-        entities.removeIf(e -> getEntityId(e).equals(id));
-        saveAllToFile(entities);
+        boolean removed = entities.removeIf(e -> getEntityId(e).equals(id));
+        if (removed) {
+            saveAllToFile(entities);
+        }
+        return removed;
     }
 
     @Override
