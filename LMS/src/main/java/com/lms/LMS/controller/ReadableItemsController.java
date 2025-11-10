@@ -7,7 +7,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("/items")
 public class ReadableItemsController {
 
     private final ReadableItemService readableItemService;
@@ -16,27 +15,27 @@ public class ReadableItemsController {
         this.readableItemService = readableItemService;
     }
 
-    @GetMapping
+    @GetMapping("/ReadableItems")
     public String listItems(Model model) {
         model.addAttribute("items", readableItemService.getAllReadableItems());
         return "readableitems/index";
     }
 
-    @GetMapping("/new")
+    @GetMapping("/ReadableItems/new")
     public String showCreateForm(Model model) {
         model.addAttribute("item", new ReadableItems());
         return "readableitems/form";
     }
 
-    @PostMapping
+    @PostMapping("/ReadableItems")
     public String createItem(@ModelAttribute ReadableItems item) {
         readableItemService.saveReadableItem(item);
-        return "redirect:/items";
+        return "redirect:/ReadableItems";
     }
 
-    @PostMapping("/{id}/delete")
+    @PostMapping("/ReadableItems/{id}/delete")
     public String deleteItem(@PathVariable String id) {
         readableItemService.deleteReadableItem(id);
-        return "redirect:/items";
+        return "redirect:/ReadableItems";
     }
 }

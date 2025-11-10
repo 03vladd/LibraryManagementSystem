@@ -1,5 +1,6 @@
 package com.lms.LMS.repo;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
 
@@ -22,6 +23,7 @@ public class InFileRepo<T> implements AbstractRepo<T> {
     public InFileRepo(Class<T> entityClass, String fileName, String dataDirectory) {
         this.entityClass = entityClass;
         this.objectMapper = new ObjectMapper();
+        this.objectMapper.findAndRegisterModules();
         this.dataFilePath = dataDirectory + File.separator + fileName;
 
         try {
