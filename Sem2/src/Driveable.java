@@ -1,3 +1,0 @@
-interface Drivable{
-    void drive();
-}

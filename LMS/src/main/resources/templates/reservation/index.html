@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Reservations</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #673AB7;
+            color: white;
+        }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        .btn {
+            padding: 8px 16px;
+            margin: 5px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .btn-primary {
+            background-color: #673AB7;
+            color: white;
+        }
+        .btn-danger {
+            background-color: #f44336;
+            color: white;
+        }
+        .btn:hover {
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+<h1>Reservations</h1>
+
+<a href="/reservations/new" class="btn btn-primary">Add New Reservation</a>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Member ID</th>
+        <th>Item ID</th>
+        <th>Date</th>
+        <th>Status</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="reservation : ${reservations}">
+        <td th:text="${reservation.id}">1</td>
+        <td th:text="${reservation.memberId}">M001</td>
+        <td th:text="${reservation.readableItemId}">I001</td>
+        <td th:text="${reservation.reservationDate}">2024-01-01</td>
+        <td th:text="${reservation.status}">Active</td>
+        <td>
+            <form th:action="@{'/reservations/' + ${reservation.id} + '/delete'}" method="post" style="display: inline;">
+                <button type="submit" class="btn btn-danger"
+                        onclick="return confirm('Are you sure you want to delete this reservation?')">
+                    Delete
+                </button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<p th:if="${#lists.isEmpty(reservations)}">No reservations found. Add one above!</p>
+
+</body>
+</html>

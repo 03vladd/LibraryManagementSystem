@@ -1,37 +1,35 @@
 package com.lms.LMS.model;
 
-import java.util.List;
-import com.lms.LMS.model.Reservation;
-import com.lms.LMS.model.Loan;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
+@Data
+@NoArgsConstructor
 public class Member {
     private String id;
     private String name;
-    private String LibraryId;
-    private List<Reservation> reservations;
-    private List<Loan> loans;
+    private String libraryId;
+    private String address;
+    private List<Loan> loans = new ArrayList<>();
 
-    public String getId() {
-        return id;
-    }
+    private String phoneNumber;
+    private String email;
 
-    public void setId(String id) {
+    // Custom constructor for backward compatibility
+    public Member(String id, String name, String libraryId, String address) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
         this.name = name;
+        this.libraryId = libraryId;
+        this.address = address;
+        this.loans = new ArrayList<>();
     }
 
-    public String getLibraryId() {
-        return LibraryId;
-    }
-
-    public void setLibraryId(String libraryId) {
-        LibraryId = libraryId;
+    // Keep the custom method
+    public void addLoan(Loan loan) {
+        this.loans.add(loan);
     }
 }

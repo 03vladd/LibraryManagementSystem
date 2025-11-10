@@ -1,43 +1,34 @@
 package com.lms.LMS.model;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
 import java.util.List;
 
+@Data
+@NoArgsConstructor
 public class Library {
     private String id;
     private String name;
-    private List<Member> members;
-    private List<ReadableItems> ReadableItems;
+    private String address;
+    private List<ReadableItems> readableItems = new ArrayList<>();
+
+    //new props
+    private String phoneNumber;
+    private String email;
 
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
+    // Custom constructor for backward compatibility
+    public Library(String id, String name, String address) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
         this.name = name;
+        this.address = address;
+        this.readableItems = new ArrayList<>();
     }
 
-    public List<Member> getMembers() {
-        return members;
-    }
-
-    public void setMembers(List<Member> members) {
-        this.members = members;
-    }
-
-    public List<ReadableItems> getReadableItems() {
-        return ReadableItems;
-    }
-
-    public void setReadableItems(List<ReadableItems> readableItems) {
-        ReadableItems = readableItems;
+    // Keep the custom method
+    public void addReadableItem(ReadableItems item) {
+        this.readableItems.add(item);
     }
 }
