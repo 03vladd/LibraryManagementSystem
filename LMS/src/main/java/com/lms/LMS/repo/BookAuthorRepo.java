@@ -1,29 +1,15 @@
 package com.lms.LMS.repo;
 
 import com.lms.LMS.model.BookAuthor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
-public class BookAuthorRepo extends BaseRepo<BookAuthor> {
+public class BookAuthorRepo extends InFileRepo<BookAuthor> {
 
-    @Override
-    protected String getId(BookAuthor entity) {
-        return entity.getId();
-    }
-
-    // Custom method - Find by book ID
-    public List<BookAuthor> findByBookId(String bookId) {
-        return data.values().stream()
-                .filter(ba -> ba.getBookId().equals(bookId))
-                .toList();
-    }
-
-    // Custom method - Find by author ID
-    public List<BookAuthor> findByAuthorId(String authorId) {
-        return data.values().stream()
-                .filter(ba -> ba.getAuthorId().equals(authorId))
-                .toList();
+    public BookAuthorRepo(
+            @Value("${app.data.directory:src/main/resources/data}") String dataDirectory
+    ) {
+        super(BookAuthor.class, "book_authors.json", dataDirectory);
     }
 }

@@ -1,22 +1,15 @@
 package com.lms.LMS.repo;
 
 import com.lms.LMS.model.BookDetails;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
-public class BookDetailsRepo extends BaseRepo<BookDetails> {
+public class BookDetailsRepo extends InFileRepo<BookDetails> {
 
-    @Override
-    protected String getId(BookDetails entity) {
-        return entity.getId();
-    }
-
-    // Custom method - Find by title (contains)
-    public List<BookDetails> findByTitleContaining(String title) {
-        return data.values().stream()
-                .filter(book -> book.getTitle().toLowerCase().contains(title.toLowerCase()))
-                .toList();
+    public BookDetailsRepo(
+            @Value("${app.data.directory:src/main/resources/data}") String dataDirectory
+    ) {
+        super(BookDetails.class, "books.json", dataDirectory);
     }
 }

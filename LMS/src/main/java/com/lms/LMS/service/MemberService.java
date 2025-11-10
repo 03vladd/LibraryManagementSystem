@@ -38,7 +38,9 @@ public class MemberService {
 
     // Get members by library ID
     public List<Member> getMembersByLibraryId(String libraryId) {
-        return memberRepo.findByLibraryId(libraryId);
+        return memberRepo.findAll().stream()
+                .filter(m -> m.getLibraryId().equals(libraryId))
+                .toList();
     }
 
     // Add loan to member

@@ -1,0 +1,68 @@
+[
+  {
+    "id": "mag-001",
+    "title": "National Geographic",
+    "publisher": "National Geographic Society",
+    "copies": []
+  },
+  {
+    "id": "mag-002",
+    "title": "Science Weekly",
+    "publisher": "Science Publishing",
+    "copies": []
+  },
+  {
+    "id": "mag-003",
+    "title": "Tech Today",
+    "publisher": "Technology Media Inc",
+    "copies": []
+  },
+  {
+    "id": "mag-004",
+    "title": "Nature Review",
+    "publisher": "Nature Publishing Group",
+    "copies": []
+  },
+  {
+    "id": "mag-005",
+    "title": "Discover",
+    "publisher": "Discover Media",
+    "copies": []
+  },
+  {
+    "id": "mag-006",
+    "title": "Popular Mechanics",
+    "publisher": "Hearst Magazines",
+    "copies": []
+  },
+  {
+    "id": "mag-007",
+    "title": "Smithsonian",
+    "publisher": "Smithsonian Magazine",
+    "copies": []
+  },
+  {
+    "id": "mag-008",
+    "title": "Time Magazine",
+    "publisher": "Meredith Corporation",
+    "copies": []
+  },
+  {
+    "id": "mag-009",
+    "title": "Newsweek",
+    "publisher": "NewsBrands International",
+    "copies": []
+  },
+  {
+    "id": "mag-010",
+    "title": "The Economist",
+    "publisher": "The Economist Group",
+    "copies": []
+  },
+  {
+    "id": "mag-011",
+    "title": "Scientific American",
+    "publisher": "Scientific American Inc",
+    "copies": []
+  }
+]

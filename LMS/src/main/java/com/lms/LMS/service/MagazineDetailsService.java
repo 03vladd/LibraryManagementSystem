@@ -37,7 +37,9 @@ public class MagazineDetailsService {
 
     // Get magazines by publisher
     public List<MagazineDetails> getMagazinesByPublisher(String publisher) {
-        return magazineDetailsRepo.findByPublisher(publisher);
+        return magazineDetailsRepo.findAll().stream()
+                .filter(m -> m.getPublisher().equals(publisher))
+                .toList();
     }
 
     // Get total magazines count

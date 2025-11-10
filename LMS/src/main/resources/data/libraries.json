@@ -1,0 +1,71 @@
+[ {
+  "id" : "lib-001",
+  "name" : "Springfield Central Library",
+  "address" : "100 Library Lane",
+  "readableItems" : [ ],
+  "phoneNumber" : "+1-555-1001",
+  "email" : "springfield@library.local"
+}, {
+  "id" : "lib-002",
+  "name" : "Shelbyville Public Library",
+  "address" : "200 Book Street",
+  "readableItems" : [ ],
+  "phoneNumber" : "+1-555-1002",
+  "email" : "shelbyville@library.local"
+}, {
+  "id" : "lib-003",
+  "name" : "Capital City Main Library",
+  "address" : "300 Reading Road",
+  "readableItems" : [ ],
+  "phoneNumber" : "+1-555-1003",
+  "email" : "capitalcity@library.local"
+}, {
+  "id" : "lib-004",
+  "name" : "East Valley Branch Library",
+  "address" : "400 Archive Avenue",
+  "readableItems" : [ ],
+  "phoneNumber" : "+1-555-1004",
+  "email" : "eastvalley@library.local"
+}, {
+  "id" : "lib-005",
+  "name" : "West Heights Community Library",
+  "address" : "500 Collection Court",
+  "readableItems" : [ ],
+  "phoneNumber" : "+1-555-1005",
+  "email" : "westheights@library.local"
+}, {
+  "id" : "lib-006",
+  "name" : "North Park Library",
+  "address" : "600 Catalog Circle",
+  "readableItems" : [ ],
+  "phoneNumber" : "+1-555-1006",
+  "email" : "northpark@library.local"
+}, {
+  "id" : "lib-007",
+  "name" : "South End Public Library",
+  "address" : "700 Database Drive",
+  "readableItems" : [ ],
+  "phoneNumber" : "+1-555-1007",
+  "email" : "southend@library.local"
+}, {
+  "id" : "lib-008",
+  "name" : "Downtown Library District",
+  "address" : "800 Index Island",
+  "readableItems" : [ ],
+  "phoneNumber" : "+1-555-1008",
+  "email" : "downtown@library.local"
+}, {
+  "id" : "lib-009",
+  "name" : "Riverside Academic Library",
+  "address" : "900 Research Ridge",
+  "readableItems" : [ ],
+  "phoneNumber" : "+1-555-1009",
+  "email" : "riverside@library.local"
+}, {
+  "id" : "lib-010",
+  "name" : "Hillside Learning Center",
+  "address" : "1000 Study Stream",
+  "readableItems" : [ ],
+  "phoneNumber" : "+1-555-1010",
+  "email" : "hillside@library.local"
+} ]

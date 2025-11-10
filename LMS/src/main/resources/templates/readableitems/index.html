@@ -49,7 +49,7 @@
 <body>
 <h1>Readable Items</h1>
 
-<a href="/items/new" class="btn btn-primary">Add New Item</a>
+<a href="/ReadableItems/new" class="btn btn-primary">Add New Item</a>
 
 <table>
     <thead>
@@ -68,7 +68,7 @@
         <td th:text="${item.barcode}">123456789</td>
         <td th:text="${item.status}">Available</td>
         <td>
-            <form th:action="@{'/items/' + ${item.id} + '/delete'}" method="post" style="display: inline;">
+            <form th:action="@{'/ReadableItems/' + ${item.id} + '/delete'}" method="post" style="display: inline;">
                 <button type="submit" class="btn btn-danger"
                         onclick="return confirm('Are you sure you want to delete this item?')">
                     Delete

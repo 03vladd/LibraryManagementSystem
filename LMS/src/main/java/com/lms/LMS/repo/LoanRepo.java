@@ -1,22 +1,15 @@
 package com.lms.LMS.repo;
 
 import com.lms.LMS.model.Loan;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
-public class LoanRepo extends BaseRepo<Loan> {
+public class LoanRepo extends InFileRepo<Loan> {
 
-    @Override
-    protected String getId(Loan entity) {
-        return entity.getId();
-    }
-
-    // Custom method - Find by member ID
-    public List<Loan> findByMemberId(String memberId) {
-        return data.values().stream()
-                .filter(loan -> loan.getMemberId().equals(memberId))
-                .toList();
+    public LoanRepo(
+            @Value("${app.data.directory:src/main/resources/data}") String dataDirectory
+    ) {
+        super(Loan.class, "loans.json", dataDirectory);
     }
 }

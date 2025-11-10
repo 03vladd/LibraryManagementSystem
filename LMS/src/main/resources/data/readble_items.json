@@ -1,0 +1,74 @@
+[
+  {
+    "id": "copy-001",
+    "title": "The Great Gatsby",
+    "barcode": "BARCODE-001",
+    "status": "Available"
+  },
+  {
+    "id": "copy-002",
+    "title": "The Great Gatsby",
+    "barcode": "BARCODE-002",
+    "status": "Reserved"
+  },
+  {
+    "id": "copy-003",
+    "title": "To Kill a Mockingbird",
+    "barcode": "BARCODE-003",
+    "status": "Available"
+  },
+  {
+    "id": "copy-004",
+    "title": "1984",
+    "barcode": "BARCODE-004",
+    "status": "Available"
+  },
+  {
+    "id": "copy-005",
+    "title": "Pride and Prejudice",
+    "barcode": "BARCODE-005",
+    "status": "Borrowed"
+  },
+  {
+    "id": "copy-006",
+    "title": "The Catcher in the Rye",
+    "barcode": "BARCODE-006",
+    "status": "Available"
+  },
+  {
+    "id": "copy-007",
+    "title": "The Hobbit",
+    "barcode": "BARCODE-007",
+    "status": "Available"
+  },
+  {
+    "id": "copy-008",
+    "title": "Brave New World",
+    "barcode": "BARCODE-008",
+    "status": "Reserved"
+  },
+  {
+    "id": "copy-009",
+    "title": "The Lord of the Rings",
+    "barcode": "BARCODE-009",
+    "status": "Available"
+  },
+  {
+    "id": "copy-010",
+    "title": "Dune",
+    "barcode": "BARCODE-010",
+    "status": "Available"
+  },
+  {
+    "id": "copy-011",
+    "title": "Foundation",
+    "barcode": "BARCODE-011",
+    "status": "Borrowed"
+  },
+  {
+    "id": "copy-012",
+    "title": "Harry Potter and the Philosopher's Stone",
+    "barcode": "BARCODE-012",
+    "status": "Available"
+  }
+]

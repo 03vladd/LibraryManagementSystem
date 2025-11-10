@@ -37,12 +37,16 @@ public class BookAuthorService {
 
     // Get authors for a book
     public List<BookAuthor> getAuthorsByBookId(String bookId) {
-        return bookAuthorRepo.findByBookId(bookId);
+        return bookAuthorRepo.findAll().stream()
+                .filter(ba -> ba.getBookId().equals(bookId))
+                .toList();
     }
 
     // Get books by an author
     public List<BookAuthor> getBooksByAuthorId(String authorId) {
-        return bookAuthorRepo.findByAuthorId(authorId);
+        return bookAuthorRepo.findAll().stream()
+                .filter(ba -> ba.getAuthorId().equals(authorId))
+                .toList();
     }
 
     // Get total book-author relationships count

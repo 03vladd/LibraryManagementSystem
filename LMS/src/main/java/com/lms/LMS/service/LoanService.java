@@ -39,7 +39,9 @@ public class LoanService {
 
     // Get loans by member ID
     public List<Loan> getLoansByMemberId(String memberId) {
-        return loanRepo.findByMemberId(memberId);
+        return loanRepo.findAll().stream()
+                .filter(l -> l.getMemberId().equals(memberId))
+                .toList();
     }
 
     // Add item to loan
