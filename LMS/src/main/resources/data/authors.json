@@ -1,0 +1,79 @@
+[
+  {
+    "id": "author-001",
+    "name": "F. Scott Fitzgerald",
+    "birthDate": "1896-09-24",
+    "nationality": "American",
+    "books": []
+  },
+  {
+    "id": "author-002",
+    "name": "Harper Lee",
+    "birthDate": "1926-04-28",
+    "nationality": "American",
+    "books": []
+  },
+  {
+    "id": "author-003",
+    "name": "George Orwell",
+    "birthDate": "1903-06-25",
+    "nationality": "British",
+    "books": []
+  },
+  {
+    "id": "author-004",
+    "name": "Jane Austen",
+    "birthDate": "1775-12-16",
+    "nationality": "British",
+    "books": []
+  },
+  {
+    "id": "author-005",
+    "name": "J.D. Salinger",
+    "birthDate": "1919-01-01",
+    "nationality": "American",
+    "books": []
+  },
+  {
+    "id": "author-006",
+    "name": "J.R.R. Tolkien",
+    "birthDate": "1892-01-03",
+    "nationality": "British",
+    "books": []
+  },
+  {
+    "id": "author-007",
+    "name": "Aldous Huxley",
+    "birthDate": "1894-07-26",
+    "nationality": "British",
+    "books": []
+  },
+  {
+    "id": "author-008",
+    "name": "Frank Herbert",
+    "birthDate": "1920-10-08",
+    "nationality": "American",
+    "books": []
+  },
+  {
+    "id": "author-009",
+    "name": "Isaac Asimov",
+    "birthDate": "1920-01-02",
+    "nationality": "American",
+    "books": []
+  },
+  {
+    "id": "author-010",
+    "name": "J.K. Rowling",
+    "birthDate": "1965-07-31",
+    "nationality": "British",
+    "books": []
+  },
+  {
+    "id": "author-011",
+    "name": "Stephen King",
+    "birthDate": "1947-09-21",
+    "nationality": "American",
+    "books": []
+  }
+]

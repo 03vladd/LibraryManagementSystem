@@ -1,0 +1,79 @@
+[
+  {
+    "id": "res-001",
+    "memberId": "member-001",
+    "readableItemId": "copy-001",
+    "reservationDate": "2024-11-05",
+    "status": "Active"
+  },
+  {
+    "id": "res-002",
+    "memberId": "member-002",
+    "readableItemId": "copy-003",
+    "reservationDate": "2024-11-06",
+    "status": "Active"
+  },
+  {
+    "id": "res-003",
+    "memberId": "member-003",
+    "readableItemId": "copy-005",
+    "reservationDate": "2024-11-07",
+    "status": "Completed"
+  },
+  {
+    "id": "res-004",
+    "memberId": "member-004",
+    "readableItemId": "copy-008",
+    "reservationDate": "2024-11-08",
+    "status": "Active"
+  },
+  {
+    "id": "res-005",
+    "memberId": "member-005",
+    "readableItemId": "copy-010",
+    "reservationDate": "2024-11-09",
+    "status": "Cancelled"
+  },
+  {
+    "id": "res-006",
+    "memberId": "member-006",
+    "readableItemId": "copy-012",
+    "reservationDate": "2024-11-10",
+    "status": "Active"
+  },
+  {
+    "id": "res-007",
+    "memberId": "member-007",
+    "readableItemId": "copy-002",
+    "reservationDate": "2024-11-05",
+    "status": "Active"
+  },
+  {
+    "id": "res-008",
+    "memberId": "member-008",
+    "readableItemId": "copy-004",
+    "reservationDate": "2024-11-06",
+    "status": "Active"
+  },
+  {
+    "id": "res-009",
+    "memberId": "member-009",
+    "readableItemId": "copy-006",
+    "reservationDate": "2024-11-07",
+    "status": "Active"
+  },
+  {
+    "id": "res-010",
+    "memberId": "member-010",
+    "readableItemId": "copy-009",
+    "reservationDate": "2024-11-08",
+    "status": "Active"
+  },
+  {
+    "id": "res-011",
+    "memberId": "member-011",
+    "readableItemId": "copy-011",
+    "reservationDate": "2024-11-09",
+    "status": "Active"
+  }
+]

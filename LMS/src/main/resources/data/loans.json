@@ -1,0 +1,79 @@
+[
+  {
+    "id": "loan-001",
+    "memberId": "member-001",
+    "date": "2024-11-05",
+    "reservations": [],
+    "items": []
+  },
+  {
+    "id": "loan-002",
+    "memberId": "member-002",
+    "date": "2024-11-06",
+    "reservations": [],
+    "items": []
+  },
+  {
+    "id": "loan-003",
+    "memberId": "member-003",
+    "date": "2024-11-07",
+    "reservations": [],
+    "items": []
+  },
+  {
+    "id": "loan-004",
+    "memberId": "member-004",
+    "date": "2024-11-08",
+    "reservations": [],
+    "items": []
+  },
+  {
+    "id": "loan-005",
+    "memberId": "member-005",
+    "date": "2024-11-09",
+    "reservations": [],
+    "items": []
+  },
+  {
+    "id": "loan-006",
+    "memberId": "member-006",
+    "date": "2024-11-10",
+    "reservations": [],
+    "items": []
+  },
+  {
+    "id": "loan-007",
+    "memberId": "member-007",
+    "date": "2024-11-05",
+    "reservations": [],
+    "items": []
+  },
+  {
+    "id": "loan-008",
+    "memberId": "member-008",
+    "date": "2024-11-06",
+    "reservations": [],
+    "items": []
+  },
+  {
+    "id": "loan-009",
+    "memberId": "member-009",
+    "date": "2024-11-07",
+    "reservations": [],
+    "items": []
+  },
+  {
+    "id": "loan-010",
+    "memberId": "member-010",
+    "date": "2024-11-08",
+    "reservations": [],
+    "items": []
+  },
+  {
+    "id": "loan-011",
+    "memberId": "member-011",
+    "date": "2024-11-09",
+    "reservations": [],
+    "items": []
+  }
+]
