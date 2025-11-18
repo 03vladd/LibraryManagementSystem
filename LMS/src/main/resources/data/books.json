@@ -1,68 +1,56 @@
-[
-  {
-    "id": "book-001",
-    "title": "The Great Gatsby",
-    "copies": [],
-    "bookAuthors": []
-  },
-  {
-    "id": "book-002",
-    "title": "To Kill a Mockingbird",
-    "copies": [],
-    "bookAuthors": []
-  },
-  {
-    "id": "book-003",
-    "title": "1984",
-    "copies": [],
-    "bookAuthors": []
-  },
-  {
-    "id": "book-004",
-    "title": "Pride and Prejudice",
-    "copies": [],
-    "bookAuthors": []
-  },
-  {
-    "id": "book-005",
-    "title": "The Catcher in the Rye",
-    "copies": [],
-    "bookAuthors": []
-  },
-  {
-    "id": "book-006",
-    "title": "The Hobbit",
-    "copies": [],
-    "bookAuthors": []
-  },
-  {
-    "id": "book-007",
-    "title": "Brave New World",
-    "copies": [],
-    "bookAuthors": []
-  },
-  {
-    "id": "book-008",
-    "title": "The Lord of the Rings",
-    "copies": [],
-    "bookAuthors": []
-  },
-  {
-    "id": "book-009",
-    "title": "Dune",
-    "copies": [],
-    "bookAuthors": []
-  },
-  {
-    "id": "book-010",
-    "title": "Foundation",
-    "copies": [],
-    "bookAuthors": []
-  },
-  {
-    "id": "book-011",
-    "title": "Harry Potter",
-    "copies": [],
-    "bookAuthors": []
-  }
-]
+[ {
+  "id" : "book-003",
+  "title" : "1984",
+  "copies" : [ ],
+  "bookAuthors" : [ ]
+}, {
+  "id" : "book-004",
+  "title" : "Pride and Prejudice",
+  "copies" : [ ],
+  "bookAuthors" : [ ]
+}, {
+  "id" : "book-005",
+  "title" : "The Catcher in the Rye",
+  "copies" : [ ],
+  "bookAuthors" : [ ]
+}, {
+  "id" : "book-006",
+  "title" : "The Hobbit",
+  "copies" : [ ],
+  "bookAuthors" : [ ]
+}, {
+  "id" : "book-007",
+  "title" : "Brave New World",
+  "copies" : [ ],
+  "bookAuthors" : [ ]
+}, {
+  "id" : "book-008",
+  "title" : "The Lord of the Rings",
+  "copies" : [ ],
+  "bookAuthors" : [ ]
+}, {
+  "id" : "book-009",
+  "title" : "Dune",
+  "copies" : [ ],
+  "bookAuthors" : [ ]
+}, {
+  "id" : "book-010",
+  "title" : "Foundation",
+  "copies" : [ ],
+  "bookAuthors" : [ ]
+}, {
+  "id" : "book-011",
+  "title" : "Harry Potter",
+  "copies" : [ ],
+  "bookAuthors" : [ ]
+}, {
+  "id" : "book-001",
+  "title" : "The Great Mirciu",
+  "copies" : null,
+  "bookAuthors" : null
+}, {
+  "id" : "book-002",
+  "title" : "To Kill a Mirciu",
+  "copies" : null,
+  "bookAuthors" : null
+} ]

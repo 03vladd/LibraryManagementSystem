@@ -57,4 +57,10 @@ public class MemberService {
     public long getMembersCount() {
         return memberRepo.count();
     }
+
+    // Update member
+    public Member updateMember(String id, Member member) {
+        return memberRepo.update(id, member);
+    }
+
 }

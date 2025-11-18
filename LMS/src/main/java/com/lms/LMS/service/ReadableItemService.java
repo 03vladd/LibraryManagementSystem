@@ -72,4 +72,8 @@ public class ReadableItemService {
     public long getItemsCount() {
         return readableItemRepo.count();
     }
+
+    public ReadableItems update(ReadableItems item, String id) {
+        return readableItemRepo.save(item);
+    }
 }

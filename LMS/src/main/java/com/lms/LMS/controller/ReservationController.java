@@ -40,4 +40,10 @@ public class ReservationController {
         reservationService.deleteReservation(id);
         return "redirect:/reservations";
     }
+
+    @PostMapping("/{id}/update")
+    public String updateReservation(@PathVariable String id, @ModelAttribute Reservation reservation) {
+        reservationService.saveReservation(reservation);
+        return "redirect:/reservations";
+    }
 }

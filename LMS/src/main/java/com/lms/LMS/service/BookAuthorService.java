@@ -53,4 +53,8 @@ public class BookAuthorService {
     public long getBookAuthorsCount() {
         return bookAuthorRepo.count();
     }
+
+    public BookAuthor updateBookAuthor(String authorId, BookAuthor bookAuthor) {
+        return bookAuthorRepo.update(authorId, bookAuthor);
+    }
 }

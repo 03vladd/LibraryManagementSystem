@@ -50,4 +50,8 @@ public class LibraryService {
     public long getLibrariesCount() {
         return libraryRepo.count();
     }
+
+    public Library updateLibrary(String id, Library library) {
+        return libraryRepo.update(id, library);
+    }
 }

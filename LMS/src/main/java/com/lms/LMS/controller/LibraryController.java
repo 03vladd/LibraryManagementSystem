@@ -43,4 +43,10 @@ public class LibraryController {
         libraryService.deleteLibrary(id);
         return "redirect:/libraries";
     }
+
+    @PostMapping("/{id}/update")
+    public String updateLibrary(@ModelAttribute Library library, @PathVariable String id) {
+        libraryService.updateLibrary(id, library);
+        return "redirect:/libraries";
+    }
 }
