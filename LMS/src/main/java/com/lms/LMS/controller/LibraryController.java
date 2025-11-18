@@ -44,9 +44,17 @@ public class LibraryController {
         return "redirect:/libraries";
     }
 
-    @PostMapping("/{id}/update")
+    @PostMapping("/{id}")
     public String updateLibrary(@ModelAttribute Library library, @PathVariable String id) {
         libraryService.updateLibrary(id, library);
+        return "redirect:/libraries";
+    }
+
+    @GetMapping("/{id}/edit")
+    public String showEditForm(@PathVariable String id,  Model model) {
+        libraryService.getLibraryById(id).ifPresent(library -> {
+            model.addAttribute("library", library);
+        });
         return "redirect:/libraries";
     }
 }

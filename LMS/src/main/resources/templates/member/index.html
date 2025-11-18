@@ -72,6 +72,7 @@
         <td th:text="${member.phoneNumber}">555-1234</td>
         <td th:text="${member.email}">john@example.com</td>
         <td>
+            <a href="#" th:href="@{'/members/' + ${member.id} + '/edit'}" class="btn btn-primary">Edit</a>
             <form th:action="@{'/members/' + ${member.id} + '/delete'}" method="post" style="display: inline;">
                 <button type="submit" class="btn btn-danger"
                         onclick="return confirm('Are you sure you want to delete this member?')">

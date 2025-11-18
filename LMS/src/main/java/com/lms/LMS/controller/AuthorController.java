@@ -30,6 +30,15 @@ public class AuthorController {
         return "author/form";
     }
 
+    // GET /authors/{id}/edit - Show edit form
+    @GetMapping("/{id}/edit")
+    public String showEditForm(@PathVariable String id, Model model) {
+        authorService.getAuthorById(id).ifPresent(author -> {
+            model.addAttribute("author", author);
+        });
+        return "author/form";
+    }
+
     // POST /authors - Create new author
     @PostMapping
     public String createAuthor(@ModelAttribute Author author) {
@@ -37,16 +46,17 @@ public class AuthorController {
         return "redirect:/authors";
     }
 
+    // POST /authors/{id} - Update author
+    @PostMapping("/{id}")
+    public String updateAuthor(@PathVariable String id, @ModelAttribute Author author) {
+        authorService.updateBookAuthor(id, author);
+        return "redirect:/authors";
+    }
+
     // POST /authors/{id}/delete - Delete author
     @PostMapping("/{id}/delete")
     public String deleteAuthor(@PathVariable String id) {
         authorService.deleteAuthor(id);
-        return "redirect:/authors";
-    }
-
-    @PostMapping("/{id}/update")
-    public String updateAuthor(@PathVariable String id, @ModelAttribute Author author) {
-        authorService.saveAuthor(author);
         return "redirect:/authors";
     }
 }

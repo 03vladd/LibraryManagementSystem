@@ -41,8 +41,10 @@ public class LoanController {
     }
 
     @PostMapping("/{id}/update")
-    public String updateLoan(@PathVariable String id, @ModelAttribute Loan loan) {
-        loanService.saveLoan(loan);
+    public String updateLoan(@PathVariable String id, @ModelAttribute Model model) {
+        loanService.getLoanById(id).ifPresent(loan -> {
+            model.addAttribute("loan", loan);
+        });
         return "redirect:/loans";
     }
 }

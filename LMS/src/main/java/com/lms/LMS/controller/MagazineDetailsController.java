@@ -41,8 +41,10 @@ public class MagazineDetailsController {
     }
 
     @PostMapping("/{id}/update")
-    public String updateMagazine(@ModelAttribute MagazineDetails magazine, @PathVariable String id) {
-        magazineDetailsService.updateMagazine(magazine, id);
+    public String updateMagazine(@ModelAttribute Model model, @PathVariable String id) {
+        magazineDetailsService.getMagazineById(id).ifPresent(magazineDetails -> {
+            model.addAttribute("magazine", magazineDetails);
+        });
         return  "redirect:/magazines";
     }
 }

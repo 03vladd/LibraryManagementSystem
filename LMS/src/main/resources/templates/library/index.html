@@ -70,18 +70,5 @@
         <td th:text="${library.phoneNumber}">555-1234</td>
         <td th:text="${library.email}">info@library.com</td>
         <td>
-            <form th:action="@{'/libraries/' + ${library.id} + '/delete'}" method="post" style="display: inline;">
-                <button type="submit" class="btn btn-danger"
-                        onclick="return confirm('Are you sure you want to delete this library?')">
-                    Delete
-                </button>
-            </form>
-        </td>
-    </tr>
-    </tbody>
-</table>
-
-<p th:if="${#lists.isEmpty(libraries)}">No libraries found. Add one above!</p>
-
-</body>
-</html>
+            <a href="#" th:href="@{'/libraries/' + ${library.id} + '/edit'}" class="btn btn-primary">Edit</a>
+            <form th:action="@{'/libraries/' + ${library.id} + '/delete'}" meth

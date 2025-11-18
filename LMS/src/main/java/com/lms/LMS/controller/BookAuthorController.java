@@ -28,21 +28,29 @@ public class BookAuthorController {
         return "bookauthor/form";
     }
 
+    @GetMapping("/{id}/edit")
+    public String showEditForm(@PathVariable String id, Model model) {
+        bookAuthorService.getBookAuthorById(id).ifPresent(bookAuthor -> {
+            model.addAttribute("bookAuthor", bookAuthor);
+        });
+        return "bookauthor/form";
+    }
+
     @PostMapping
     public String createBookAuthor(@ModelAttribute BookAuthor bookAuthor) {
         bookAuthorService.saveBookAuthor(bookAuthor);
         return "redirect:/bookauthors";
     }
 
-    @PostMapping("/{id}/delete")
-    public String deleteBookAuthor(@PathVariable String id) {
-        bookAuthorService.deleteBookAuthor(id);
+    @PostMapping("/{id}")
+    public String updateBookAuthor(@PathVariable String id, @ModelAttribute BookAuthor bookAuthor) {
+        bookAuthorService.updateBookAuthor(id, bookAuthor);
         return "redirect:/bookauthors";
     }
 
-    @PostMapping("/{id}/update")
-    public String updateBookAuthor(@PathVariable String id, @ModelAttribute BookAuthor bookAuthor) {
-        bookAuthorService.updateBookAuthor(id, bookAuthor);
+    @PostMapping("/{id}/delete")
+    public String deleteBookAuthor(@PathVariable String id) {
+        bookAuthorService.deleteBookAuthor(id);
         return "redirect:/bookauthors";
     }
 }

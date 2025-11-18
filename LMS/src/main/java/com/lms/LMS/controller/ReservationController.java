@@ -29,21 +29,29 @@ public class ReservationController {
         return "reservation/form";
     }
 
+    @GetMapping("/{id}/edit")
+    public String showEditForm(@PathVariable String id, Model model) {
+        reservationService.getReservationById(id).ifPresent(reservation -> {
+            model.addAttribute("reservation", reservation);
+        });
+        return "reservation/form";
+    }
+
     @PostMapping
     public String createReservation(@ModelAttribute Reservation reservation) {
         reservationService.saveReservation(reservation);
         return "redirect:/reservations";
     }
 
-    @PostMapping("/{id}/delete")
-    public String deleteReservation(@PathVariable String id) {
-        reservationService.deleteReservation(id);
+    @PostMapping("/{id}")
+    public String updateReservation(@PathVariable String id, @ModelAttribute Reservation reservation) {
+        reservationService.updateReservation(reservation, id);
         return "redirect:/reservations";
     }
 
-    @PostMapping("/{id}/update")
-    public String updateReservation(@PathVariable String id, @ModelAttribute Reservation reservation) {
-        reservationService.saveReservation(reservation);
+    @PostMapping("/{id}/delete")
+    public String deleteReservation(@PathVariable String id) {
+        reservationService.deleteReservation(id);
         return "redirect:/reservations";
     }
 }
