@@ -54,30 +54,3 @@
 <table>
     <thead>
     <tr>
-        <th>ID</th>
-        <th>Title</th>
-        <th>Publisher</th>
-        <th>Actions</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="magazine : ${magazines}">
-        <td th:text="${magazine.id}">1</td>
-        <td th:text="${magazine.title}">National Geographic</td>
-        <td th:text="${magazine.publisher}">NG Publishing</td>
-        <td>
-            <form th:action="@{'/magazines/' + ${magazine.id} + '/delete'}" method="post" style="display: inline;">
-                <button type="submit" class="btn btn-danger"
-                        onclick="return confirm('Are you sure you want to delete this magazine?')">
-                    Delete
-                </button>
-            </form>
-        </td>
-    </tr>
-    </tbody>
-</table>
-
-<p th:if="${#lists.isEmpty(magazines)}">No magazines found. Add one above!</p>
-
-</body>
-</html>

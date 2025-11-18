@@ -68,6 +68,7 @@
         <td th:text="${author.birthDate}">1947-09-21</td>
         <td th:text="${author.nationality}">American</td>
         <td>
+            <a href="#" th:href="@{'/authors/' + ${author.id} + '/edit'}" class="btn btn-primary">Edit</a>
             <form th:action="@{'/authors/' + ${author.id} + '/delete'}" method="post" style="display: inline;">
                 <button type="submit" class="btn btn-danger"
                         onclick="return confirm('Are you sure you want to delete this author?')">

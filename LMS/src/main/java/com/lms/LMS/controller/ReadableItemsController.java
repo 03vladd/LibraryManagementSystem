@@ -44,4 +44,12 @@ public class ReadableItemsController {
         readableItemService.saveReadableItem(item);
         return "redirect:/ReadableItems";
     }
+
+    @GetMapping("/{id}/edit")
+    public String showEditForm(@PathVariable String id, Model model) {
+        readableItemService.getReadableItemById(id).ifPresent(readableItem -> {
+            model.addAttribute("item", readableItem);
+        });
+        return "readableitems/form";
+    }
 }

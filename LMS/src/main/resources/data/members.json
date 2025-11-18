@@ -1,101 +1,97 @@
-[
-  {
-    "id": "member-001",
-    "name": "John Smith",
-    "libraryId": "lib-001",
-    "address": "123 Main Street",
-    "phoneNumber": "+1-555-0101",
-    "email": "john@example.com",
-    "loans": []
-  },
-  {
-    "id": "member-002",
-    "name": "Mary Johnson",
-    "libraryId": "lib-001",
-    "address": "456 Oak Avenue",
-    "phoneNumber": "+1-555-0102",
-    "email": "mary@example.com",
-    "loans": []
-  },
-  {
-    "id": "member-003",
-    "name": "Robert Williams",
-    "libraryId": "lib-002",
-    "address": "789 Pine Road",
-    "phoneNumber": "+1-555-0103",
-    "email": "robert@example.com",
-    "loans": []
-  },
-  {
-    "id": "member-004",
-    "name": "Patricia Brown",
-    "libraryId": "lib-001",
-    "address": "321 Elm Street",
-    "phoneNumber": "+1-555-0104",
-    "email": "patricia@example.com",
-    "loans": []
-  },
-  {
-    "id": "member-005",
-    "name": "Michael Davis",
-    "libraryId": "lib-002",
-    "address": "654 Maple Drive",
-    "phoneNumber": "+1-555-0105",
-    "email": "michael@example.com",
-    "loans": []
-  },
-  {
-    "id": "member-006",
-    "name": "Linda Miller",
-    "libraryId": "lib-001",
-    "address": "987 Cedar Lane",
-    "phoneNumber": "+1-555-0106",
-    "email": "linda@example.com",
-    "loans": []
-  },
-  {
-    "id": "member-007",
-    "name": "James Wilson",
-    "libraryId": "lib-003",
-    "address": "147 Birch Court",
-    "phoneNumber": "+1-555-0107",
-    "email": "james@example.com",
-    "loans": []
-  },
-  {
-    "id": "member-008",
-    "name": "Jennifer Moore",
-    "libraryId": "lib-002",
-    "address": "258 Spruce Way",
-    "phoneNumber": "+1-555-0108",
-    "email": "jennifer@example.com",
-    "loans": []
-  },
-  {
-    "id": "member-009",
-    "name": "Christopher Taylor",
-    "libraryId": "lib-001",
-    "address": "369 Ash Boulevard",
-    "phoneNumber": "+1-555-0109",
-    "email": "christopher@example.com",
-    "loans": []
-  },
-  {
-    "id": "member-010",
-    "name": "Nancy Anderson",
-    "libraryId": "lib-003",
-    "address": "741 Walnut Square",
-    "phoneNumber": "+1-555-0110",
-    "email": "nancy@example.com",
-    "loans": []
-  },
-  {
-    "id": "member-011",
-    "name": "Daniel Jackson",
-    "libraryId": "lib-001",
-    "address": "852 Chestnut Path",
-    "phoneNumber": "+1-555-0111",
-    "email": "daniel@example.com",
-    "loans": []
-  }
-]
+[ {
+  "id" : "member-001",
+  "name" : "John Smith",
+  "libraryId" : "lib-001",
+  "address" : "123 Main Street",
+  "loans" : [ ],
+  "phoneNumber" : "+1-555-0101",
+  "email" : "john@example.com"
+}, {
+  "id" : "member-002",
+  "name" : "Mary Johnson",
+  "libraryId" : "lib-001",
+  "address" : "456 Oak Avenue",
+  "loans" : [ ],
+  "phoneNumber" : "+1-555-0102",
+  "email" : "mary@example.com"
+}, {
+  "id" : "member-003",
+  "name" : "Robert Williams",
+  "libraryId" : "lib-002",
+  "address" : "789 Pine Road",
+  "loans" : [ ],
+  "phoneNumber" : "+1-555-0103",
+  "email" : "robert@example.com"
+}, {
+  "id" : "member-004",
+  "name" : "Patricia Brown",
+  "libraryId" : "lib-001",
+  "address" : "321 Elm Street",
+  "loans" : [ ],
+  "phoneNumber" : "+1-555-0104",
+  "email" : "patricia@example.com"
+}, {
+  "id" : "member-005",
+  "name" : "Michael Davis",
+  "libraryId" : "lib-002",
+  "address" : "654 Maple Drive",
+  "loans" : [ ],
+  "phoneNumber" : "+1-555-0105",
+  "email" : "michael@example.com"
+}, {
+  "id" : "member-006",
+  "name" : "Linda Miller",
+  "libraryId" : "lib-001",
+  "address" : "987 Cedar Lane",
+  "loans" : [ ],
+  "phoneNumber" : "+1-555-0106",
+  "email" : "linda@example.com"
+}, {
+  "id" : "member-007",
+  "name" : "James Wilson",
+  "libraryId" : "lib-003",
+  "address" : "147 Birch Court",
+  "loans" : [ ],
+  "phoneNumber" : "+1-555-0107",
+  "email" : "james@example.com"
+}, {
+  "id" : "member-008",
+  "name" : "Jennifer Moore",
+  "libraryId" : "lib-002",
+  "address" : "258 Spruce Way",
+  "loans" : [ ],
+  "phoneNumber" : "+1-555-0108",
+  "email" : "jennifer@example.com"
+}, {
+  "id" : "member-009",
+  "name" : "Christopher Taylor",
+  "libraryId" : "lib-001",
+  "address" : "369 Ash Boulevard",
+  "loans" : [ ],
+  "phoneNumber" : "+1-555-0109",
+  "email" : "christopher@example.com"
+}, {
+  "id" : "member-010",
+  "name" : "Nancy Anderson",
+  "libraryId" : "lib-003",
+  "address" : "741 Walnut Square",
+  "loans" : [ ],
+  "phoneNumber" : "+1-555-0110",
+  "email" : "nancy@example.com"
+}, {
+  "id" : "member-011",
+  "name" : "Daniel Jackson",
+  "libraryId" : "lib-001",
+  "address" : "852 Chestnut Path",
+  "loans" : [ ],
+  "phoneNumber" : "+1-555-0111",
+  "email" : "daniel@example.com"
+}, {
+  "id" : "member-0111",
+  "name" : "Daniel Jackson",
+  "libraryId" : "lib-001",
+  "address" : "852 Chestnut Path",
+  "loans" : [ ],
+  "phoneNumber" : "+1-555-0111",
+  "email" : "daniel@example.com"
+} ]
