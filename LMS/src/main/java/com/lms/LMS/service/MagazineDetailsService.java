@@ -42,6 +42,10 @@ public class MagazineDetailsService {
                 .toList();
     }
 
+    public MagazineDetails updateMagazine(MagazineDetails magazine, String id) {
+        return magazineDetailsRepo.update(id, magazine);
+    }
+
     // Get total magazines count
     public long getMagazinesCount() {
         return magazineDetailsRepo.count();

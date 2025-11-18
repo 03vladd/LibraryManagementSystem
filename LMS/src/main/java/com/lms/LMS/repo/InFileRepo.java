@@ -60,22 +60,52 @@ public class InFileRepo<T> implements AbstractRepo<T> {
 
     private String getEntityId(T entity) {
         try {
-            Field idField = entityClass.getDeclaredField("id");
+            Field idField = null;
+            Class<?> currentClass = entityClass;
+
+            // Search for 'id' field in current class and superclasses
+            while (currentClass != null && idField == null) {
+                try {
+                    idField = currentClass.getDeclaredField("id");
+                } catch (NoSuchFieldException e) {
+                    currentClass = currentClass.getSuperclass();
+                }
+            }
+
+            if (idField == null) {
+                throw new RuntimeException("Entity must have an 'id' field");
+            }
+
             idField.setAccessible(true);
             Object id = idField.get(entity);
             return id != null ? id.toString() : null;
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            throw new RuntimeException("Entity must have an 'id' field", e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException("Error accessing 'id' field", e);
         }
     }
 
     private void setEntityId(T entity, String id) {
         try {
-            Field idField = entityClass.getDeclaredField("id");
+            Field idField = null;
+            Class<?> currentClass = entityClass;
+
+            // Search for 'id' field in current class and superclasses
+            while (currentClass != null && idField == null) {
+                try {
+                    idField = currentClass.getDeclaredField("id");
+                } catch (NoSuchFieldException e) {
+                    currentClass = currentClass.getSuperclass();
+                }
+            }
+
+            if (idField == null) {
+                throw new RuntimeException("Entity must have an 'id' field");
+            }
+
             idField.setAccessible(true);
             idField.set(entity, id);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            throw new RuntimeException("Entity must have an 'id' field", e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException("Error setting 'id' field", e);
         }
     }
 
@@ -128,5 +158,28 @@ public class InFileRepo<T> implements AbstractRepo<T> {
     @Override
     public long count() {
         return loadAllFromFile().size();
+    }
+
+    @Override
+    public T update(String id, T entity) {
+        List<T> entities = loadAllFromFile();
+        final String finalId = id;
+
+        boolean found = false;
+        for (int i = 0; i < entities.size(); i++) {
+            if (getEntityId(entities.get(i)).equals(finalId)) {
+                setEntityId(entity, id);
+                entities.set(i, entity);
+                found = true;
+                break;
+            }
+        }
+
+        if (found) {
+            saveAllToFile(entities);
+            return entity;
+        }
+
+        return null;
     }
 }

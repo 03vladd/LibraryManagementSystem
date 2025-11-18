@@ -39,4 +39,10 @@ public class BookAuthorController {
         bookAuthorService.deleteBookAuthor(id);
         return "redirect:/bookauthors";
     }
+
+    @PostMapping("/{id}/update")
+    public String updateBookAuthor(@PathVariable String id, @ModelAttribute BookAuthor bookAuthor) {
+        bookAuthorService.updateBookAuthor(id, bookAuthor);
+        return "redirect:/bookauthors";
+    }
 }

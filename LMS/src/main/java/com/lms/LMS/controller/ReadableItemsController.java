@@ -38,4 +38,10 @@ public class ReadableItemsController {
         readableItemService.deleteReadableItem(id);
         return "redirect:/ReadableItems";
     }
+
+    @PostMapping("ReadbleItems/{id}/update")
+    public String updateItem(@PathVariable String id, @ModelAttribute ReadableItems item) {
+        readableItemService.saveReadableItem(item);
+        return "redirect:/ReadableItems";
+    }
 }

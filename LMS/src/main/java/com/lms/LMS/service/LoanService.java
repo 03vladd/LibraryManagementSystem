@@ -68,4 +68,8 @@ public class LoanService {
     public long getLoansCount() {
         return loanRepo.count();
     }
+
+    public Loan updateLoan(Loan loan, String id) {
+        return loanRepo.update(id,loan);
+    }
 }

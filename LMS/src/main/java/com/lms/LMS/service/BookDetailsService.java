@@ -57,4 +57,9 @@ public class BookDetailsService {
     public long getBooksCount() {
         return bookDetailsRepo.count();
     }
+
+    // Update book
+    public BookDetails updateBook(String id, BookDetails book) {
+        return bookDetailsRepo.update(id, book);
+    }
 }

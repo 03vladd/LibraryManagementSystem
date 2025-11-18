@@ -30,10 +30,26 @@ public class MemberController {
         return "member/form";
     }
 
+    // GET /members/{id}/edit - Show edit form
+    @GetMapping("/{id}/edit")
+    public String showEditForm(@PathVariable String id, Model model) {
+        memberService.getMemberById(id).ifPresent(member -> {
+            model.addAttribute("member", member);
+        });
+        return "member/form";
+    }
+
     // POST /members - Create new member
     @PostMapping
     public String createMember(@ModelAttribute Member member) {
         memberService.saveMember(member);
+        return "redirect:/members";
+    }
+
+    // POST /members/{id} - Update member
+    @PostMapping("/{id}/update")
+    public String updateMember(@PathVariable String id, @ModelAttribute Member member) {
+        memberService.updateMember(id, member);
         return "redirect:/members";
     }
 

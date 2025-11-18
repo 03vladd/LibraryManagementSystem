@@ -50,6 +50,10 @@ public class ReservationService {
                 .findFirst();
     }
 
+    public Reservation updateReservation(Reservation reservation, String id) {
+        return reservationRepo.save(reservation);
+    }
+
     // Cancel reservation
     public Reservation cancelReservation(String reservationId, ReservationStatus Status) {
         Optional<Reservation> reservationOpt = reservationRepo.findById(reservationId);

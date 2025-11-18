@@ -39,4 +39,18 @@ public class BookDetailsController {
         bookDetailsService.deleteBook(id);
         return "redirect:/books";
     }
+
+    @GetMapping("/{id}/edit")
+    public String showEditForm(@PathVariable String id, Model model) {
+        bookDetailsService.getBookById(id).ifPresent(book -> {
+            model.addAttribute("book", book);
+        });
+        return "bookdetails/form";
+    }
+
+    @PostMapping("/{id}")
+    public String updateBook(@PathVariable String id, @ModelAttribute BookDetails book) {
+        bookDetailsService.updateBook(id, book);
+        return "redirect:/books";
+    }
 }

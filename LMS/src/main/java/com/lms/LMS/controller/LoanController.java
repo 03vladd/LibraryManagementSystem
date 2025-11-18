@@ -39,4 +39,10 @@ public class LoanController {
         loanService.deleteLoan(id);
         return "redirect:/loans";
     }
+
+    @PostMapping("/{id}/update")
+    public String updateLoan(@PathVariable String id, @ModelAttribute Loan loan) {
+        loanService.saveLoan(loan);
+        return "redirect:/loans";
+    }
 }

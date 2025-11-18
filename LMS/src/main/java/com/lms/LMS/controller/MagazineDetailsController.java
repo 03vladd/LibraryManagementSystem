@@ -39,4 +39,10 @@ public class MagazineDetailsController {
         magazineDetailsService.deleteMagazine(id);
         return "redirect:/magazines";
     }
+
+    @PostMapping("/{id}/update")
+    public String updateMagazine(@ModelAttribute MagazineDetails magazine, @PathVariable String id) {
+        magazineDetailsService.updateMagazine(magazine, id);
+        return  "redirect:/magazines";
+    }
 }

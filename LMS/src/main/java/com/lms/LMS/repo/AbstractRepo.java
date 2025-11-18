@@ -11,6 +11,8 @@ public interface AbstractRepo<T> {
 
     Optional<T> findById(String id);
 
+    T update(String Id, T entity);
+
     boolean existsById(String id);
 
     boolean deleteById(String id);
