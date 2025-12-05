@@ -25,12 +25,12 @@ public class ReservationController {
 
     @GetMapping("/new")
     public String showCreateForm(Model model) {
-        model.addAttribute("reservation", new Reservation(null, null, null, null, ReservationStatus.Active));
+        model.addAttribute("reservation", new Reservation());
         return "reservation/form";
     }
 
     @GetMapping("/{id}/edit")
-    public String showEditForm(@PathVariable String id, Model model) {
+    public String showEditForm(@PathVariable Long id, Model model) {
         reservationService.getReservationById(id).ifPresent(reservation -> {
             model.addAttribute("reservation", reservation);
         });
@@ -44,13 +44,14 @@ public class ReservationController {
     }
 
     @PostMapping("/{id}")
-    public String updateReservation(@PathVariable String id, @ModelAttribute Reservation reservation) {
-        reservationService.updateReservation(reservation, id);
+    public String updateReservation(@PathVariable Long id, @ModelAttribute Reservation reservation) {
+        reservation.setId(id);
+        reservationService.saveReservation(reservation);
         return "redirect:/reservations";
     }
 
     @PostMapping("/{id}/delete")
-    public String deleteReservation(@PathVariable String id) {
+    public String deleteReservation(@PathVariable Long id) {
         reservationService.deleteReservation(id);
         return "redirect:/reservations";
     }

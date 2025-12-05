@@ -35,16 +35,23 @@ public class LoanController {
     }
 
     @PostMapping("/{id}/delete")
-    public String deleteLoan(@PathVariable String id) {
+    public String deleteLoan(@PathVariable Long id) {
         loanService.deleteLoan(id);
         return "redirect:/loans";
     }
 
-    @PostMapping("/{id}/update")
-    public String updateLoan(@PathVariable String id, @ModelAttribute Model model) {
+    @GetMapping("/{id}/edit")
+    public String showEditForm(@PathVariable Long id, Model model) {
         loanService.getLoanById(id).ifPresent(loan -> {
             model.addAttribute("loan", loan);
         });
+        return "loan/form";
+    }
+
+    @PostMapping("/{id}")
+    public String updateLoan(@PathVariable Long id, @ModelAttribute Loan loan) {
+        loan.setId(id);
+        loanService.saveLoan(loan);
         return "redirect:/loans";
     }
 }

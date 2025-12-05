@@ -16,46 +16,41 @@ public class MemberController {
         this.memberService = memberService;
     }
 
-    // GET /members - Show all members
     @GetMapping
     public String listMembers(Model model) {
         model.addAttribute("members", memberService.getAllMembers());
         return "member/index";
     }
 
-    // GET /members/new - Show create form
     @GetMapping("/new")
     public String showCreateForm(Model model) {
         model.addAttribute("member", new Member());
         return "member/form";
     }
 
-    // GET /members/{id}/edit - Show edit form
     @GetMapping("/{id}/edit")
-    public String showEditForm(@PathVariable String id, Model model) {
+    public String showEditForm(@PathVariable Long id, Model model) {
         memberService.getMemberById(id).ifPresent(member -> {
             model.addAttribute("member", member);
         });
         return "member/form";
     }
 
-    // POST /members - Create new member
     @PostMapping
     public String createMember(@ModelAttribute Member member) {
         memberService.saveMember(member);
         return "redirect:/members";
     }
 
-    // POST /members/{id} - Update member
-    @PostMapping("/{id}/update")
-    public String updateMember(@PathVariable String id, @ModelAttribute Member member) {
-        memberService.updateMember(id, member);
+    @PostMapping("/{id}")
+    public String updateMember(@PathVariable Long id, @ModelAttribute Member member) {
+        member.setId(id);
+        memberService.saveMember(member);
         return "redirect:/members";
     }
 
-    // POST /members/{id}/delete - Delete member
     @PostMapping("/{id}/delete")
-    public String deleteMember(@PathVariable String id) {
+    public String deleteMember(@PathVariable Long id) {
         memberService.deleteMember(id);
         return "redirect:/members";
     }

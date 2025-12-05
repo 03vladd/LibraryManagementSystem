@@ -35,16 +35,23 @@ public class MagazineDetailsController {
     }
 
     @PostMapping("/{id}/delete")
-    public String deleteMagazine(@PathVariable String id) {
+    public String deleteMagazine(@PathVariable Long id) {
         magazineDetailsService.deleteMagazine(id);
         return "redirect:/magazines";
     }
 
-    @PostMapping("/{id}/update")
-    public String updateMagazine(@ModelAttribute Model model, @PathVariable String id) {
-        magazineDetailsService.getMagazineById(id).ifPresent(magazineDetails -> {
-            model.addAttribute("magazine", magazineDetails);
+    @GetMapping("/{id}/edit")
+    public String showEditForm(@PathVariable Long id, Model model) {
+        magazineDetailsService.getMagazineById(id).ifPresent(magazine -> {
+            model.addAttribute("magazine", magazine);
         });
-        return  "redirect:/magazines";
+        return "magazinedetails/form";
+    }
+
+    @PostMapping("/{id}")
+    public String updateMagazine(@PathVariable Long id, @ModelAttribute MagazineDetails magazine) {
+        magazine.setId(id);
+        magazineDetailsService.saveMagazine(magazine);
+        return "redirect:/magazines";
     }
 }
