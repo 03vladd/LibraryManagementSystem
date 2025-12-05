@@ -1,7 +1,7 @@
 package com.lms.LMS.service;
 
 import com.lms.LMS.model.MagazineDetails;
-import com.lms.LMS.repo.MagazineDetailsRepo;
+import com.lms.LMS.repo.MagazineDetailsRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,45 +9,35 @@ import java.util.Optional;
 
 @Service
 public class MagazineDetailsService {
-    private final MagazineDetailsRepo magazineDetailsRepo;
+    private final MagazineDetailsRepository magazineDetailsRepository;
 
-    public MagazineDetailsService(MagazineDetailsRepo magazineDetailsRepo) {
-        this.magazineDetailsRepo = magazineDetailsRepo;
+    public MagazineDetailsService(MagazineDetailsRepository magazineDetailsRepository) {
+        this.magazineDetailsRepository = magazineDetailsRepository;
     }
 
-    // Create or update magazine
     public MagazineDetails saveMagazine(MagazineDetails magazine) {
-        return magazineDetailsRepo.save(magazine);
+        return magazineDetailsRepository.save(magazine);
     }
 
-    // Get all magazines
     public List<MagazineDetails> getAllMagazines() {
-        return magazineDetailsRepo.findAll();
+        return magazineDetailsRepository.findAll();
     }
 
-    // Get magazine by ID
-    public Optional<MagazineDetails> getMagazineById(String id) {
-        return magazineDetailsRepo.findById(id);
+    public Optional<MagazineDetails> getMagazineById(Long id) {
+        return magazineDetailsRepository.findById(id);
     }
 
-    // Delete magazine
-    public boolean deleteMagazine(String id) {
-        return magazineDetailsRepo.deleteById(id);
+    public void deleteMagazine(Long id) {
+        magazineDetailsRepository.deleteById(id);
     }
 
-    // Get magazines by publisher
     public List<MagazineDetails> getMagazinesByPublisher(String publisher) {
-        return magazineDetailsRepo.findAll().stream()
+        return magazineDetailsRepository.findAll().stream()
                 .filter(m -> m.getPublisher().equals(publisher))
                 .toList();
     }
 
-    public MagazineDetails updateMagazine(MagazineDetails magazine, String id) {
-        return magazineDetailsRepo.update(id, magazine);
-    }
-
-    // Get total magazines count
     public long getMagazinesCount() {
-        return magazineDetailsRepo.count();
+        return magazineDetailsRepository.count();
     }
 }

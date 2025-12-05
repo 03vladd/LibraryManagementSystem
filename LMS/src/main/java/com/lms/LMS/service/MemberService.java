@@ -2,7 +2,7 @@ package com.lms.LMS.service;
 
 import com.lms.LMS.model.Loan;
 import com.lms.LMS.model.Member;
-import com.lms.LMS.repo.MemberRepo;
+import com.lms.LMS.repo.MemberRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,57 +10,45 @@ import java.util.Optional;
 
 @Service
 public class MemberService {
-    private final MemberRepo memberRepo;
+    private final MemberRepository memberRepository;
 
-    public MemberService(MemberRepo memberRepo) {
-        this.memberRepo = memberRepo;
+    public MemberService(MemberRepository memberRepository) {
+        this.memberRepository = memberRepository;
     }
 
-    // Create or update member
     public Member saveMember(Member member) {
-        return memberRepo.save(member);
+        return memberRepository.save(member);
     }
 
-    // Get all members
     public List<Member> getAllMembers() {
-        return memberRepo.findAll();
+        return memberRepository.findAll();
     }
 
-    // Get member by ID
-    public Optional<Member> getMemberById(String id) {
-        return memberRepo.findById(id);
+    public Optional<Member> getMemberById(Long id) {
+        return memberRepository.findById(id);
     }
 
-    // Delete member
-    public boolean deleteMember(String id) {
-        return memberRepo.deleteById(id);
+    public void deleteMember(Long id) {
+        memberRepository.deleteById(id);
     }
 
-    // Get members by library ID
-    public List<Member> getMembersByLibraryId(String libraryId) {
-        return memberRepo.findAll().stream()
-                .filter(m -> m.getLibraryId().equals(libraryId))
+    public List<Member> getMembersByLibraryId(Long libraryId) {
+        return memberRepository.findAll().stream()
+                .filter(m -> m.getLibrary().getId().equals(libraryId))
                 .toList();
     }
 
-    // Add loan to member
-    public Member addLoanToMember(String memberId, Loan loan) {
-        Optional<Member> memberOpt = memberRepo.findById(memberId);
+    public Member addLoanToMember(Long memberId, Loan loan) {
+        Optional<Member> memberOpt = memberRepository.findById(memberId);
         if (memberOpt.isPresent()) {
             Member member = memberOpt.get();
-            return memberRepo.save(member);
+            member.addLoan(loan);
+            return memberRepository.save(member);
         }
         return null;
     }
 
-    // Get total members count
     public long getMembersCount() {
-        return memberRepo.count();
+        return memberRepository.count();
     }
-
-    // Update member
-    public Member updateMember(String id, Member member) {
-        return memberRepo.update(id, member);
-    }
-
 }

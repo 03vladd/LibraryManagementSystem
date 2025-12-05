@@ -2,7 +2,8 @@ package com.lms.LMS.service;
 
 import com.lms.LMS.model.ReadableItemStatus;
 import com.lms.LMS.model.ReadableItems;
-import com.lms.LMS.repo.ReadableItemRepo;
+import com.lms.LMS.repo.ReadableItemsRepository;
+import com.lms.LMS.repo.ReadableItemsRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,70 +11,57 @@ import java.util.Optional;
 
 @Service
 public class ReadableItemService {
-    private final ReadableItemRepo readableItemRepo;
+    private final ReadableItemsRepository readableItemRepository;
 
-    public ReadableItemService(ReadableItemRepo readableItemRepo) {
-        this.readableItemRepo = readableItemRepo;
+    public ReadableItemService(ReadableItemsRepository readableItemRepository) {
+        this.readableItemRepository = readableItemRepository;
     }
 
-    // Create or update readable item
     public ReadableItems saveReadableItem(ReadableItems item) {
-        return readableItemRepo.save(item);
+        return readableItemRepository.save(item);
     }
 
-    // Get all readable items
     public List<ReadableItems> getAllReadableItems() {
-        return readableItemRepo.findAll();
+        return readableItemRepository.findAll();
     }
 
-    // Get readable item by ID
-    public Optional<ReadableItems> getReadableItemById(String id) {
-        return readableItemRepo.findById(id);
+    public Optional<ReadableItems> getReadableItemById(Long id) {
+        return readableItemRepository.findById(id);
     }
 
-    // Delete readable item
-    public boolean deleteReadableItem(String id) {
-        return readableItemRepo.deleteById(id);
+    public void deleteReadableItem(Long id) {
+        readableItemRepository.deleteById(id);
     }
 
-    // Get items by status
-    public List<ReadableItems> getItemsByStatus(String status) {
-        return readableItemRepo.findAll().stream()
-                .filter(item -> item.getStatus().toString().equals(status))
+    public List<ReadableItems> getItemsByStatus(ReadableItemStatus status) {
+        return readableItemRepository.findAll().stream()
+                .filter(item -> item.getStatus().equals(status))
                 .toList();
     }
 
-    // Get item by barcode
     public Optional<ReadableItems> getItemByBarcode(String barcode) {
-        return readableItemRepo.findAll().stream()
+        return readableItemRepository.findAll().stream()
                 .filter(item -> item.getBarcode().equals(barcode))
                 .findFirst();
     }
 
-    // Update item status
-    public ReadableItems updateItemStatus(String itemId, ReadableItemStatus newStatus) {
-        Optional<ReadableItems> itemOpt = readableItemRepo.findById(itemId);
+    public ReadableItems updateItemStatus(Long itemId, ReadableItemStatus newStatus) {
+        Optional<ReadableItems> itemOpt = readableItemRepository.findById(itemId);
         if (itemOpt.isPresent()) {
             ReadableItems item = itemOpt.get();
             item.setStatus(newStatus);
-            return readableItemRepo.save(item);
+            return readableItemRepository.save(item);
         }
         return null;
     }
 
-    // Get available items
     public List<ReadableItems> getAvailableItems() {
-        return readableItemRepo.findAll().stream()
-                .filter(item -> item.getStatus().toString().equals("Available"))
+        return readableItemRepository.findAll().stream()
+                .filter(item -> item.getStatus().equals(ReadableItemStatus.Available))
                 .toList();
     }
 
-    // Get total items count
     public long getItemsCount() {
-        return readableItemRepo.count();
-    }
-
-    public ReadableItems update(ReadableItems item, String id) {
-        return readableItemRepo.save(item);
+        return readableItemRepository.count();
     }
 }

@@ -2,7 +2,7 @@ package com.lms.LMS.service;
 
 import com.lms.LMS.model.Library;
 import com.lms.LMS.model.ReadableItems;
-import com.lms.LMS.repo.LibraryRepo;
+import com.lms.LMS.repo.LibraryRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,48 +10,40 @@ import java.util.Optional;
 
 @Service
 public class LibraryService {
-    private final LibraryRepo libraryRepo;
+    private final LibraryRepository libraryRepository;
 
-    public LibraryService(LibraryRepo libraryRepo) {
-        this.libraryRepo = libraryRepo;
+    public LibraryService(LibraryRepository libraryRepository) {
+        this.libraryRepository = libraryRepository;
     }
 
-    // Create or update library
     public Library saveLibrary(Library library) {
-        return libraryRepo.save(library);
+        return libraryRepository.save(library);
     }
 
-    // Get all libraries
     public List<Library> getAllLibraries() {
-        return libraryRepo.findAll();
+        return libraryRepository.findAll();
     }
 
-    // Get library by ID
-    public Optional<Library> getLibraryById(String id) {
-        return libraryRepo.findById(id);
+    public Optional<Library> getLibraryById(Long id) {
+        return libraryRepository.findById(id);
     }
 
-    // Delete library
-    public boolean deleteLibrary(String id) {
-        return libraryRepo.deleteById(id);
+    public boolean deleteLibrary(Long id) {
+        libraryRepository.deleteById(id);
+        return true;
     }
 
-    // Add readable item to library
-    public Library addReadableItemToLibrary(String libraryId, ReadableItems item) {
-        Optional<Library> libraryOpt = libraryRepo.findById(libraryId);
+    public Library addReadableItemToLibrary(Long libraryId, ReadableItems item) {
+        Optional<Library> libraryOpt = libraryRepository.findById(libraryId);
         if (libraryOpt.isPresent()) {
             Library library = libraryOpt.get();
-            return libraryRepo.save(library);
+            library.addReadableItem(item);
+            return libraryRepository.save(library);
         }
         return null;
     }
 
-    // Get total libraries count
     public long getLibrariesCount() {
-        return libraryRepo.count();
-    }
-
-    public Library updateLibrary(String id, Library library) {
-        return libraryRepo.update(id, library);
+        return libraryRepository.count();
     }
 }

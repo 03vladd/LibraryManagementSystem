@@ -1,7 +1,7 @@
 package com.lms.LMS.service;
 
 import com.lms.LMS.model.BookAuthor;
-import com.lms.LMS.repo.BookAuthorRepo;
+import com.lms.LMS.repo.BookAuthorRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,52 +9,41 @@ import java.util.Optional;
 
 @Service
 public class BookAuthorService {
-    private final BookAuthorRepo bookAuthorRepo;
+    private final BookAuthorRepository bookAuthorRepository;
 
-    public BookAuthorService(BookAuthorRepo bookAuthorRepo) {
-        this.bookAuthorRepo = bookAuthorRepo;
+    public BookAuthorService(BookAuthorRepository bookAuthorRepository) {
+        this.bookAuthorRepository = bookAuthorRepository;
     }
 
-    // Create or update book-author relationship
     public BookAuthor saveBookAuthor(BookAuthor bookAuthor) {
-        return bookAuthorRepo.save(bookAuthor);
+        return bookAuthorRepository.save(bookAuthor);
     }
 
-    // Get all book-author relationships
     public List<BookAuthor> getAllBookAuthors() {
-        return bookAuthorRepo.findAll();
+        return bookAuthorRepository.findAll();
     }
 
-    // Get book-author by ID
-    public Optional<BookAuthor> getBookAuthorById(String id) {
-        return bookAuthorRepo.findById(id);
+    public Optional<BookAuthor> getBookAuthorById(Long id) {
+        return bookAuthorRepository.findById(id);
     }
 
-    // Delete book-author relationship
-    public boolean deleteBookAuthor(String id) {
-        return bookAuthorRepo.deleteById(id);
+    public void deleteBookAuthor(Long id) {
+        bookAuthorRepository.deleteById(id);
     }
 
-    // Get authors for a book
-    public List<BookAuthor> getAuthorsByBookId(String bookId) {
-        return bookAuthorRepo.findAll().stream()
-                .filter(ba -> ba.getBookId().equals(bookId))
+    public List<BookAuthor> getAuthorsByBookId(Long bookId) {
+        return bookAuthorRepository.findAll().stream()
+                .filter(ba -> ba.getBook().getId().equals(bookId))
                 .toList();
     }
 
-    // Get books by an author
-    public List<BookAuthor> getBooksByAuthorId(String authorId) {
-        return bookAuthorRepo.findAll().stream()
-                .filter(ba -> ba.getAuthorId().equals(authorId))
+    public List<BookAuthor> getBooksByAuthorId(Long authorId) {
+        return bookAuthorRepository.findAll().stream()
+                .filter(ba -> ba.getAuthor().getId().equals(authorId))
                 .toList();
     }
 
-    // Get total book-author relationships count
     public long getBookAuthorsCount() {
-        return bookAuthorRepo.count();
-    }
-
-    public BookAuthor updateBookAuthor(String authorId, BookAuthor bookAuthor) {
-        return bookAuthorRepo.update(authorId, bookAuthor);
+        return bookAuthorRepository.count();
     }
 }

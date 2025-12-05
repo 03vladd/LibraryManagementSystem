@@ -2,7 +2,7 @@ package com.lms.LMS.service;
 
 import com.lms.LMS.model.BookAuthor;
 import com.lms.LMS.model.BookDetails;
-import com.lms.LMS.repo.BookDetailsRepo;
+import com.lms.LMS.repo.BookDetailsRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,56 +10,45 @@ import java.util.Optional;
 
 @Service
 public class BookDetailsService {
-    private final BookDetailsRepo bookDetailsRepo;
+    private final BookDetailsRepository bookDetailsRepository;
 
-    public BookDetailsService(BookDetailsRepo bookDetailsRepo) {
-        this.bookDetailsRepo = bookDetailsRepo;
+    public BookDetailsService(BookDetailsRepository bookDetailsRepository) {
+        this.bookDetailsRepository = bookDetailsRepository;
     }
 
-    // Create or update book
     public BookDetails saveBook(BookDetails book) {
-        return bookDetailsRepo.save(book);
+        return bookDetailsRepository.save(book);
     }
 
-    // Get all books
     public List<BookDetails> getAllBooks() {
-        return bookDetailsRepo.findAll();
+        return bookDetailsRepository.findAll();
     }
 
-    // Get book by ID
-    public Optional<BookDetails> getBookById(String id) {
-        return bookDetailsRepo.findById(id);
+    public Optional<BookDetails> getBookById(Long id) {
+        return bookDetailsRepository.findById(id);
     }
 
-    // Delete book
-    public boolean deleteBook(String id) {
-        return bookDetailsRepo.deleteById(id);
+    public void deleteBook(Long id) {
+        bookDetailsRepository.deleteById(id);
     }
 
-    // Search books by title
     public List<BookDetails> searchBooksByTitle(String title) {
-        return bookDetailsRepo.findAll().stream()
+        return bookDetailsRepository.findAll().stream()
                 .filter(b -> b.getTitle().toLowerCase().contains(title.toLowerCase()))
                 .toList();
     }
 
-    // Add author to book
-    public BookDetails addAuthorToBook(String bookId, BookAuthor bookAuthor) {
-        Optional<BookDetails> bookOpt = bookDetailsRepo.findById(bookId);
+    public BookDetails addAuthorToBook(Long bookId, BookAuthor bookAuthor) {
+        Optional<BookDetails> bookOpt = bookDetailsRepository.findById(bookId);
         if (bookOpt.isPresent()) {
             BookDetails book = bookOpt.get();
-            return bookDetailsRepo.save(book);
+            book.getBookAuthors().add(bookAuthor);
+            return bookDetailsRepository.save(book);
         }
         return null;
     }
 
-    // Get total books count
     public long getBooksCount() {
-        return bookDetailsRepo.count();
-    }
-
-    // Update book
-    public BookDetails updateBook(String id, BookDetails book) {
-        return bookDetailsRepo.update(id, book);
+        return bookDetailsRepository.count();
     }
 }
