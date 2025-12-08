@@ -35,13 +35,13 @@ public class BookDetailsController {
     }
 
     @PostMapping("/{id}/delete")
-    public String deleteBook(@PathVariable String id) {
+    public String deleteBook(@PathVariable Long id) {
         bookDetailsService.deleteBook(id);
         return "redirect:/books";
     }
 
     @GetMapping("/{id}/edit")
-    public String showEditForm(@PathVariable String id, Model model) {
+    public String showEditForm(@PathVariable Long id, Model model) {
         bookDetailsService.getBookById(id).ifPresent(book -> {
             model.addAttribute("book", book);
         });
@@ -49,8 +49,9 @@ public class BookDetailsController {
     }
 
     @PostMapping("/{id}")
-    public String updateBook(@PathVariable String id, @ModelAttribute BookDetails book) {
-        bookDetailsService.updateBook(id, book);
+    public String updateBook(@PathVariable Long id, @ModelAttribute BookDetails book) {
+        book.setId(id);
+        bookDetailsService.saveBook(book);
         return "redirect:/books";
     }
 }

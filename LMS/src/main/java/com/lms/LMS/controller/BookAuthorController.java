@@ -24,12 +24,12 @@ public class BookAuthorController {
 
     @GetMapping("/new")
     public String showCreateForm(Model model) {
-        model.addAttribute("bookAuthor", new BookAuthor(null, null, null));
+        model.addAttribute("bookAuthor", new BookAuthor());
         return "bookauthor/form";
     }
 
     @GetMapping("/{id}/edit")
-    public String showEditForm(@PathVariable String id, Model model) {
+    public String showEditForm(@PathVariable Long id, Model model) {
         bookAuthorService.getBookAuthorById(id).ifPresent(bookAuthor -> {
             model.addAttribute("bookAuthor", bookAuthor);
         });
@@ -43,13 +43,14 @@ public class BookAuthorController {
     }
 
     @PostMapping("/{id}")
-    public String updateBookAuthor(@PathVariable String id, @ModelAttribute BookAuthor bookAuthor) {
-        bookAuthorService.updateBookAuthor(id, bookAuthor);
+    public String updateBookAuthor(@PathVariable Long id, @ModelAttribute BookAuthor bookAuthor) {
+        bookAuthor.setId(id);
+        bookAuthorService.saveBookAuthor(bookAuthor);
         return "redirect:/bookauthors";
     }
 
     @PostMapping("/{id}/delete")
-    public String deleteBookAuthor(@PathVariable String id) {
+    public String deleteBookAuthor(@PathVariable Long id) {
         bookAuthorService.deleteBookAuthor(id);
         return "redirect:/bookauthors";
     }

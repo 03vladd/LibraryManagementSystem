@@ -1,33 +1,44 @@
 package com.lms.LMS.model;
 
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table(name = "libraries")
 @Data
 @NoArgsConstructor
 public class Library {
-    private String id;
-    private String name;
-    private String address;
-    private List<ReadableItems> readableItems = new ArrayList<>();
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    //new props
-    private String phoneNumber;
+    @NotBlank(message = "Library name cannot be blank")
+    private String name;
+
+    @NotBlank(message = "Address cannot be blank")
+    private String address;
+
+    @Email(message = "Email should be valid")
     private String email;
 
+    @NotBlank(message = "Phone number cannot be blank")
+    private String phoneNumber;
 
-    // Custom constructor for backward compatibility
-    public Library(String id, String name, String address) {
-        this.id = id;
+    @OneToMany(mappedBy = "library", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ReadableItems> readableItems = new ArrayList<>();
+
+    public Library(String name, String address) {
         this.name = name;
         this.address = address;
         this.readableItems = new ArrayList<>();
     }
 
-    // Keep the custom method
     public void addReadableItem(ReadableItems item) {
         this.readableItems.add(item);
     }

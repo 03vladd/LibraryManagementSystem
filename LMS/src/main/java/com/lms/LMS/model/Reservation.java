@@ -1,57 +1,34 @@
 package com.lms.LMS.model;
 
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+
+import java.time.LocalDate;
+
+@Entity
+@Table(name = "reservations")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Reservation {
-    private String id;
-    private String memberId;
-    private String readableItemId;
-    private String reservationDate;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @NotNull(message = "Reservation date cannot be null")
+    private LocalDate reservationDate;
+
+    @Enumerated(EnumType.STRING)
     private ReservationStatus status;
 
-    public Reservation(String id, String memberId, String readableItemId, String reservationDate, ReservationStatus status) {
-        this.id = id;
-        this.memberId = memberId;
-        this.readableItemId = readableItemId;
-        this.reservationDate = reservationDate;
-        this.status = status;
-    }
+    @ManyToOne
+    @JoinColumn(name = "loan_id")
+    private Loan loan;
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getMemberId() {
-        return memberId;
-    }
-
-    public void setMemberId(String memberId) {
-        this.memberId = memberId;
-    }
-
-    public String getReadableItemId() {
-        return readableItemId;
-    }
-
-    public void setReadableItemId(String readableItemId) {
-        this.readableItemId = readableItemId;
-    }
-
-    public String getReservationDate() {
-        return reservationDate;
-    }
-
-    public void setReservationDate(String reservationDate) {
-        this.reservationDate = reservationDate;
-    }
-
-    public ReservationStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(ReservationStatus status) {
-        this.status = status;
-    }
+    @ManyToOne
+    @JoinColumn(name = "readable_item_id")
+    private ReadableItems readableItem;
 }

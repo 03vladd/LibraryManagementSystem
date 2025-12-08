@@ -53,12 +53,6 @@
   "birthDate" : [ 1920, 1, 2 ],
   "nationality" : "American"
 }, {
-  "id" : "author-010",
-  "name" : "J.K. Rowling",
-  "books" : [ ],
-  "birthDate" : [ 1965, 7, 31 ],
-  "nationality" : "British"
-}, {
   "id" : "author-011",
   "name" : "Stephen King",
   "books" : [ ],

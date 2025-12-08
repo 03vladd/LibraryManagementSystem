@@ -1,34 +1,49 @@
 package com.lms.LMS.model;
 
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table(name = "members")
 @Data
 @NoArgsConstructor
 public class Member {
-    private String id;
-    private String name;
-    private String libraryId;
-    private String address;
-    private List<Loan> loans = new ArrayList<>();
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    private String phoneNumber;
+    @NotBlank(message = "Name cannot be blank")
+    private String name;
+
+    @NotBlank(message = "Address cannot be blank")
+    private String address;
+
+    @Email(message = "Email should be valid")
     private String email;
 
-    // Custom constructor for backward compatibility
-    public Member(String id, String name, String libraryId, String address) {
-        this.id = id;
+    @NotBlank(message = "Phone number cannot be blank")
+    private String phoneNumber;
+
+    @ManyToOne
+    @JoinColumn(name = "library_id")
+    private Library library;
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Loan> loans = new ArrayList<>();
+
+    public Member(String name, String address, Library library) {
         this.name = name;
-        this.libraryId = libraryId;
         this.address = address;
+        this.library = library;
         this.loans = new ArrayList<>();
     }
 
-    // Keep the custom method
     public void addLoan(Loan loan) {
         this.loans.add(loan);
     }

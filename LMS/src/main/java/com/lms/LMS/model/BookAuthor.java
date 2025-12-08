@@ -1,40 +1,25 @@
 package com.lms.LMS.model;
 
+import jakarta.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+
+@Entity
+@Table(name = "book_authors")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class BookAuthor {
-    private String id;
-    private String bookId;
-    private String authorId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "book_id")
+    private BookDetails book;
+
+    @ManyToOne
+    @JoinColumn(name = "author_id")
     private Author author;
-
-    public BookAuthor(String id, String bookId, String authorId) {
-
-        this.id = id;
-        this.bookId = bookId;
-        this.authorId = authorId;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getBookId() {
-        return bookId;
-    }
-
-    public void setBookId(String bookId) {
-        this.bookId = bookId;
-    }
-
-    public String getAuthorId() {
-        return authorId;
-    }
-
-    public void setAuthorId(String authorId) {
-        this.authorId = authorId;
-    }
 }

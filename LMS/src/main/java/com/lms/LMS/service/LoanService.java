@@ -3,7 +3,7 @@ package com.lms.LMS.service;
 import com.lms.LMS.model.Loan;
 import com.lms.LMS.model.ReadableItems;
 import com.lms.LMS.model.Reservation;
-import com.lms.LMS.repo.LoanRepo;
+import com.lms.LMS.repo.LoanRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,65 +11,55 @@ import java.util.Optional;
 
 @Service
 public class LoanService {
-    private final LoanRepo loanRepo;
+    private final LoanRepository loanRepository;
 
-    public LoanService(LoanRepo loanRepo) {
-        this.loanRepo = loanRepo;
+    public LoanService(LoanRepository loanRepository) {
+        this.loanRepository = loanRepository;
     }
 
-    // Create or update loan
     public Loan saveLoan(Loan loan) {
-        return loanRepo.save(loan);
+        return loanRepository.save(loan);
     }
 
-    // Get all loans
     public List<Loan> getAllLoans() {
-        return loanRepo.findAll();
+        return loanRepository.findAll();
     }
 
-    // Get loan by ID
-    public Optional<Loan> getLoanById(String id) {
-        return loanRepo.findById(id);
+    public Optional<Loan> getLoanById(Long id) {
+        return loanRepository.findById(id);
     }
 
-    // Delete loan
-    public boolean deleteLoan(String id) {
-        return loanRepo.deleteById(id);
+    public void deleteLoan(Long id) {
+        loanRepository.deleteById(id);
     }
 
-    // Get loans by member ID
-    public List<Loan> getLoansByMemberId(String memberId) {
-        return loanRepo.findAll().stream()
-                .filter(l -> l.getMemberId().equals(memberId))
+    public List<Loan> getLoansByMemberId(Long memberId) {
+        return loanRepository.findAll().stream()
+                .filter(l -> l.getMember().getId().equals(memberId))
                 .toList();
     }
 
-    // Add item to loan
-    public Loan addItemToLoan(String loanId, ReadableItems item) {
-        Optional<Loan> loanOpt = loanRepo.findById(loanId);
+    public Loan addItemToLoan(Long loanId, ReadableItems item) {
+        Optional<Loan> loanOpt = loanRepository.findById(loanId);
         if (loanOpt.isPresent()) {
             Loan loan = loanOpt.get();
-            return loanRepo.save(loan);
+            loan.getItems().add(item);
+            return loanRepository.save(loan);
         }
         return null;
     }
 
-    // Add reservation to loan
-    public Loan addReservationToLoan(String loanId, Reservation reservation) {
-        Optional<Loan> loanOpt = loanRepo.findById(loanId);
+    public Loan addReservationToLoan(Long loanId, Reservation reservation) {
+        Optional<Loan> loanOpt = loanRepository.findById(loanId);
         if (loanOpt.isPresent()) {
             Loan loan = loanOpt.get();
-            return loanRepo.save(loan);
+            loan.getReservations().add(reservation);
+            return loanRepository.save(loan);
         }
         return null;
     }
 
-    // Get total loans count
     public long getLoansCount() {
-        return loanRepo.count();
-    }
-
-    public Loan updateLoan(Loan loan, String id) {
-        return loanRepo.update(id,loan);
+        return loanRepository.count();
     }
 }
