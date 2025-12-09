@@ -2,6 +2,8 @@ package com.lms.LMS.controller;
 
 import com.lms.LMS.model.BookAuthor;
 import com.lms.LMS.service.BookAuthorService;
+import com.lms.LMS.service.BookDetailsService;
+import com.lms.LMS.service.AuthorService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -11,9 +13,15 @@ import org.springframework.web.bind.annotation.*;
 public class BookAuthorController {
 
     private final BookAuthorService bookAuthorService;
+    private final BookDetailsService bookDetailsService;
+    private final AuthorService authorService;
 
-    public BookAuthorController(BookAuthorService bookAuthorService) {
+    public BookAuthorController(BookAuthorService bookAuthorService,
+                                BookDetailsService bookDetailsService,
+                                AuthorService authorService) {
         this.bookAuthorService = bookAuthorService;
+        this.bookDetailsService = bookDetailsService;
+        this.authorService = authorService;
     }
 
     @GetMapping
@@ -25,6 +33,8 @@ public class BookAuthorController {
     @GetMapping("/new")
     public String showCreateForm(Model model) {
         model.addAttribute("bookAuthor", new BookAuthor());
+        model.addAttribute("books", bookDetailsService.getAllBooks());
+        model.addAttribute("authors", authorService.getAllAuthors());
         return "bookauthor/form";
     }
 
@@ -33,6 +43,8 @@ public class BookAuthorController {
         bookAuthorService.getBookAuthorById(id).ifPresent(bookAuthor -> {
             model.addAttribute("bookAuthor", bookAuthor);
         });
+        model.addAttribute("books", bookDetailsService.getAllBooks());
+        model.addAttribute("authors", authorService.getAllAuthors());
         return "bookauthor/form";
     }
 

@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +32,7 @@ public class Library {
     private String phoneNumber;
 
     @OneToMany(mappedBy = "library", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
     private List<ReadableItems> readableItems = new ArrayList<>();
 
     public Library(String name, String address) {

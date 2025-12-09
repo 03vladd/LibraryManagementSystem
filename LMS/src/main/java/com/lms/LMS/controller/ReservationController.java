@@ -1,8 +1,9 @@
 package com.lms.LMS.controller;
 
 import com.lms.LMS.model.Reservation;
-import com.lms.LMS.model.ReservationStatus;
 import com.lms.LMS.service.ReservationService;
+import com.lms.LMS.service.LoanService;
+import com.lms.LMS.service.ReadableItemService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -12,9 +13,15 @@ import org.springframework.web.bind.annotation.*;
 public class ReservationController {
 
     private final ReservationService reservationService;
+    private final LoanService loanService;
+    private final ReadableItemService readableItemService;
 
-    public ReservationController(ReservationService reservationService) {
+    public ReservationController(ReservationService reservationService,
+                                 LoanService loanService,
+                                 ReadableItemService readableItemService) {
         this.reservationService = reservationService;
+        this.loanService = loanService;
+        this.readableItemService = readableItemService;
     }
 
     @GetMapping
@@ -26,6 +33,8 @@ public class ReservationController {
     @GetMapping("/new")
     public String showCreateForm(Model model) {
         model.addAttribute("reservation", new Reservation());
+        model.addAttribute("loans", loanService.getAllLoans());
+        model.addAttribute("items", readableItemService.getAllReadableItems());
         return "reservation/form";
     }
 
@@ -34,6 +43,8 @@ public class ReservationController {
         reservationService.getReservationById(id).ifPresent(reservation -> {
             model.addAttribute("reservation", reservation);
         });
+        model.addAttribute("loans", loanService.getAllLoans());
+        model.addAttribute("items", readableItemService.getAllReadableItems());
         return "reservation/form";
     }
 

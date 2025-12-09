@@ -28,18 +28,6 @@ public class MagazineDetailsController {
         return "magazinedetails/form";
     }
 
-    @PostMapping
-    public String createMagazine(@ModelAttribute MagazineDetails magazine) {
-        magazineDetailsService.saveMagazine(magazine);
-        return "redirect:/magazines";
-    }
-
-    @PostMapping("/{id}/delete")
-    public String deleteMagazine(@PathVariable Long id) {
-        magazineDetailsService.deleteMagazine(id);
-        return "redirect:/magazines";
-    }
-
     @GetMapping("/{id}/edit")
     public String showEditForm(@PathVariable Long id, Model model) {
         magazineDetailsService.getMagazineById(id).ifPresent(magazine -> {
@@ -48,10 +36,22 @@ public class MagazineDetailsController {
         return "magazinedetails/form";
     }
 
+    @PostMapping
+    public String createMagazine(@ModelAttribute MagazineDetails magazine) {
+        magazineDetailsService.saveMagazine(magazine);
+        return "redirect:/magazines";
+    }
+
     @PostMapping("/{id}")
     public String updateMagazine(@PathVariable Long id, @ModelAttribute MagazineDetails magazine) {
         magazine.setId(id);
         magazineDetailsService.saveMagazine(magazine);
+        return "redirect:/magazines";
+    }
+
+    @PostMapping("/{id}/delete")
+    public String deleteMagazine(@PathVariable Long id) {
+        magazineDetailsService.deleteMagazine(id);
         return "redirect:/magazines";
     }
 }

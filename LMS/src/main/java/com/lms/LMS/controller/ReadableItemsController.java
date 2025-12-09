@@ -2,6 +2,7 @@ package com.lms.LMS.controller;
 
 import com.lms.LMS.model.ReadableItems;
 import com.lms.LMS.service.ReadableItemService;
+import com.lms.LMS.service.LibraryService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -11,13 +12,16 @@ import org.springframework.web.bind.annotation.*;
 public class ReadableItemsController {
 
     private final ReadableItemService readableItemService;
+    private final LibraryService libraryService;
 
-    public ReadableItemsController(ReadableItemService readableItemService) {
+    public ReadableItemsController(ReadableItemService readableItemService,
+                                   LibraryService libraryService) {
         this.readableItemService = readableItemService;
+        this.libraryService = libraryService;
     }
 
     @GetMapping
-    public String listItems(Model model) {
+    public String listReadableItems(Model model) {
         model.addAttribute("items", readableItemService.getAllReadableItems());
         return "readableitems/index";
     }
@@ -25,19 +29,8 @@ public class ReadableItemsController {
     @GetMapping("/new")
     public String showCreateForm(Model model) {
         model.addAttribute("item", new ReadableItems());
+        model.addAttribute("libraries", libraryService.getAllLibraries());
         return "readableitems/form";
-    }
-
-    @PostMapping
-    public String createItem(@ModelAttribute ReadableItems item) {
-        readableItemService.saveReadableItem(item);
-        return "redirect:/readableitems";
-    }
-
-    @PostMapping("/{id}/delete")
-    public String deleteItem(@PathVariable Long id) {
-        readableItemService.deleteReadableItem(id);
-        return "redirect:/readableitems";
     }
 
     @GetMapping("/{id}/edit")
@@ -45,13 +38,26 @@ public class ReadableItemsController {
         readableItemService.getReadableItemById(id).ifPresent(item -> {
             model.addAttribute("item", item);
         });
+        model.addAttribute("libraries", libraryService.getAllLibraries());
         return "readableitems/form";
     }
 
+    @PostMapping
+    public String createReadableItem(@ModelAttribute ReadableItems item) {
+        readableItemService.saveReadableItem(item);
+        return "redirect:/readableitems";
+    }
+
     @PostMapping("/{id}")
-    public String updateItem(@PathVariable Long id, @ModelAttribute ReadableItems item) {
+    public String updateReadableItem(@PathVariable Long id, @ModelAttribute ReadableItems item) {
         item.setId(id);
         readableItemService.saveReadableItem(item);
+        return "redirect:/readableitems";
+    }
+
+    @PostMapping("/{id}/delete")
+    public String deleteReadableItem(@PathVariable Long id) {
+        readableItemService.deleteReadableItem(id);
         return "redirect:/readableitems";
     }
 }
