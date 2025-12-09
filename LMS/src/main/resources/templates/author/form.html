@@ -2,79 +2,133 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Add New Author</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${author.id != null ? 'Edit Author' : 'Create Author'}">Form</title>
     <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            max-width: 600px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
+            width: 100%;
+            padding: 40px;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
         }
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
         label {
             display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
         }
         input[type="text"],
-        input[type="date"] {
+        input[type="date"],
+        select {
             width: 100%;
-            padding: 8px;
+            padding: 10px;
             border: 1px solid #ddd;
-            border-radius: 4px;
-            box-sizing: border-box;
+            border-radius: 5px;
+            font-size: 14px;
         }
-        .btn {
-            padding: 10px 20px;
-            margin: 5px;
-            text-decoration: none;
+        input[type="text"]:focus,
+        input[type="date"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 5px rgba(102, 126, 234, 0.3);
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+        }
+        button, .btn {
+            flex: 1;
+            padding: 12px;
             border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: 600;
             cursor: pointer;
-            border-radius: 4px;
+            transition: all 0.3s ease;
         }
-        .btn-primary {
-            background-color: #FF9800;
+        .btn-save {
+            background: #667eea;
             color: white;
         }
-        .btn-secondary {
-            background-color: #808080;
-            color: white;
+        .btn-save:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
         }
-        .btn:hover {
-            opacity: 0.8;
+        .btn-cancel {
+            background: #e9ecef;
+            color: #333;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn-cancel:hover {
+            background: #dee2e6;
+        }
+        .error {
+            color: #dc3545;
+            font-size: 13px;
+            margin-top: 5px;
         }
     </style>
 </head>
 <body>
-<h1>Add New Author</h1>
+<div class="container">
+    <h1 th:text="${author.id != null ? 'Edit Author' : 'Create New Author'}"></h1>
 
-<form th:action="@{/authors}" th:object="${author}" method="post">
+    <!-- FIX: Use string concatenation instead of @{} inside ternary -->
+    <form th:object="${author}"
+          th:action="${author.id != null ? '/authors/' + author.id : '/authors'}"
+          method="post">
 
-    <div class="form-group">
-        <label for="id">ID:</label>
-        <input type="text" id="id" th:field="*{id}" required />
-    </div>
+        <div class="form-group">
+            <label for="name">Name *</label>
+            <input type="text" id="name" th:field="*{name}" required>
+            <div class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+        </div>
 
-    <div class="form-group">
-        <label for="name">Name:</label>
-        <input type="text" id="name" th:field="*{name}" required />
-    </div>
+        <div class="form-group">
+            <label for="birthDate">Birth Date</label>
+            <input type="date" id="birthDate" th:field="*{birthDate}">
+            <div class="error" th:if="${#fields.hasErrors('birthDate')}" th:errors="*{birthDate}"></div>
+        </div>
 
-    <div class="form-group">
-        <label for="birthDate">Birth Date:</label>
-        <input type="date" id="birthDate" th:field="*{birthDate}" />
-    </div>
+        <div class="form-group">
+            <label for="nationality">Nationality</label>
+            <input type="text" id="nationality" th:field="*{nationality}">
+            <div class="error" th:if="${#fields.hasErrors('nationality')}" th:errors="*{nationality}"></div>
+        </div>
 
-    <div class="form-group">
-        <label for="nationality">Nationality:</label>
-        <input type="text" id="nationality" th:field="*{nationality}" />
-    </div>
-
-    <button type="submit" class="btn btn-primary">Save Author</button>
-    <a href="/authors" class="btn btn-secondary">Cancel</a>
-
-</form>
-
+        <div class="button-group">
+            <button type="submit" class="btn-save">
+                <span th:text="${author.id != null ? 'Update Author' : 'Create Author'}"></span>
+            </button>
+            <a href="/authors" class="btn btn-cancel">Cancel</a>
+        </div>
+    </form>
+</div>
 </body>
 </html>

@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Table(name = "readable_items")
@@ -27,5 +28,6 @@ public class ReadableItems {
 
     @ManyToOne
     @JoinColumn(name = "library_id")
+    @ToString.Exclude
     private Library library;
 }
