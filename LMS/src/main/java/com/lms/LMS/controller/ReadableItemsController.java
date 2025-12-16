@@ -1,10 +1,13 @@
 package com.lms.LMS.controller;
 
+import com.lms.LMS.exception.EntityDeletionException;
 import com.lms.LMS.model.ReadableItems;
 import com.lms.LMS.service.ReadableItemService;
 import com.lms.LMS.service.LibraryService;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -43,21 +46,35 @@ public class ReadableItemsController {
     }
 
     @PostMapping
-    public String createReadableItem(@ModelAttribute ReadableItems item) {
+    public String createReadableItem(@Valid @ModelAttribute ReadableItems item, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("libraries", libraryService.getAllLibraries());
+            return "readableitems/form";
+        }
         readableItemService.saveReadableItem(item);
         return "redirect:/readableitems";
     }
 
     @PostMapping("/{id}")
-    public String updateReadableItem(@PathVariable Long id, @ModelAttribute ReadableItems item) {
+    public String updateReadableItem(@PathVariable Long id, @Valid @ModelAttribute ReadableItems item, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("libraries", libraryService.getAllLibraries());
+            return "readableitems/form";
+        }
         item.setId(id);
         readableItemService.saveReadableItem(item);
         return "redirect:/readableitems";
     }
 
     @PostMapping("/{id}/delete")
-    public String deleteReadableItem(@PathVariable Long id) {
-        readableItemService.deleteReadableItem(id);
-        return "redirect:/readableitems";
+    public String deleteReadableItem(@PathVariable Long id, Model model) {
+        try {
+            readableItemService.deleteReadableItem(id);
+            return "redirect:/readableitems";
+        } catch (EntityDeletionException e) {
+            model.addAttribute("items", readableItemService.getAllReadableItems());
+            model.addAttribute("error", e.getMessage());
+            return "readableitems/index";
+        }
     }
 }

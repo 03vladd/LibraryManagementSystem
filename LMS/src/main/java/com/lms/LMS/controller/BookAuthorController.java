@@ -1,11 +1,14 @@
 package com.lms.LMS.controller;
 
+import com.lms.LMS.exception.EntityDeletionException;
 import com.lms.LMS.model.BookAuthor;
 import com.lms.LMS.service.BookAuthorService;
 import com.lms.LMS.service.BookDetailsService;
 import com.lms.LMS.service.AuthorService;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -49,21 +52,37 @@ public class BookAuthorController {
     }
 
     @PostMapping
-    public String createBookAuthor(@ModelAttribute BookAuthor bookAuthor) {
+    public String createBookAuthor(@Valid @ModelAttribute BookAuthor bookAuthor, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("books", bookDetailsService.getAllBooks());
+            model.addAttribute("authors", authorService.getAllAuthors());
+            return "bookauthor/form";
+        }
         bookAuthorService.saveBookAuthor(bookAuthor);
         return "redirect:/bookauthors";
     }
 
     @PostMapping("/{id}")
-    public String updateBookAuthor(@PathVariable Long id, @ModelAttribute BookAuthor bookAuthor) {
+    public String updateBookAuthor(@PathVariable Long id, @Valid @ModelAttribute BookAuthor bookAuthor, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("books", bookDetailsService.getAllBooks());
+            model.addAttribute("authors", authorService.getAllAuthors());
+            return "bookauthor/form";
+        }
         bookAuthor.setId(id);
         bookAuthorService.saveBookAuthor(bookAuthor);
         return "redirect:/bookauthors";
     }
 
     @PostMapping("/{id}/delete")
-    public String deleteBookAuthor(@PathVariable Long id) {
-        bookAuthorService.deleteBookAuthor(id);
-        return "redirect:/bookauthors";
+    public String deleteBookAuthor(@PathVariable Long id, Model model) {
+        try {
+            bookAuthorService.deleteBookAuthor(id);
+            return "redirect:/bookauthors";
+        } catch (EntityDeletionException e) {
+            model.addAttribute("bookAuthors", bookAuthorService.getAllBookAuthors());
+            model.addAttribute("error", e.getMessage());
+            return "bookauthor/index";
+        }
     }
 }

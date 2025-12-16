@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+import lombok.ToString;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -23,18 +24,21 @@ public class Loan {
     @NotNull(message = "Loan date cannot be null")
     private LocalDate date;
 
+    @NotNull(message = "Status cannot be null")
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private LoanStatus status = LoanStatus.ACTIVE;
+
+    @NotNull(message = "Member cannot be null")
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
 
     @OneToMany(mappedBy = "loan", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Reservation> reservations = new ArrayList<>();
-
-    @ManyToMany
-    @JoinTable(
-            name = "loan_readable_items",
-            joinColumns = @JoinColumn(name = "loan_id"),
-            inverseJoinColumns = @JoinColumn(name = "readable_item_id")
-    )
+    @ToString.Exclude
     private List<ReadableItems> items = new ArrayList<>();
+
+    @OneToMany(mappedBy = "loan", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
+    private List<Reservation> reservations = new ArrayList<>();
 }

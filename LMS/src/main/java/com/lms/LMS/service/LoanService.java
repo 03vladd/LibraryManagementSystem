@@ -1,9 +1,9 @@
 package com.lms.LMS.service;
 
 import com.lms.LMS.model.Loan;
-import com.lms.LMS.model.ReadableItems;
-import com.lms.LMS.model.Reservation;
+import com.lms.LMS.model.LoanStatus;
 import com.lms.LMS.repo.LoanRepository;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,6 +25,24 @@ public class LoanService {
         return loanRepository.findAll();
     }
 
+    public List<Loan> getFilteredAndSortedLoans(String memberName, String status, String sortBy, String sortOrder) {
+        Sort.Direction direction = "desc".equalsIgnoreCase(sortOrder) ? Sort.Direction.DESC : Sort.Direction.ASC;
+        Sort sort = Sort.by(direction, sortBy != null && !sortBy.isEmpty() ? sortBy : "id");
+
+        List<Loan> loans = loanRepository.findAll(sort);
+
+        if ((memberName == null || memberName.isEmpty()) && (status == null || status.isEmpty())) {
+            return loans;
+        }
+
+        return loans.stream()
+                .filter(loan -> memberName == null || memberName.isEmpty() ||
+                        loan.getMember().getName().toLowerCase().contains(memberName.toLowerCase()))
+                .filter(loan -> status == null || status.isEmpty() ||
+                        loan.getStatus().toString().equalsIgnoreCase(status))
+                .toList();
+    }
+
     public Optional<Loan> getLoanById(Long id) {
         return loanRepository.findById(id);
     }
@@ -35,28 +53,8 @@ public class LoanService {
 
     public List<Loan> getLoansByMemberId(Long memberId) {
         return loanRepository.findAll().stream()
-                .filter(l -> l.getMember().getId().equals(memberId))
+                .filter(loan -> loan.getMember().getId().equals(memberId))
                 .toList();
-    }
-
-    public Loan addItemToLoan(Long loanId, ReadableItems item) {
-        Optional<Loan> loanOpt = loanRepository.findById(loanId);
-        if (loanOpt.isPresent()) {
-            Loan loan = loanOpt.get();
-            loan.getItems().add(item);
-            return loanRepository.save(loan);
-        }
-        return null;
-    }
-
-    public Loan addReservationToLoan(Long loanId, Reservation reservation) {
-        Optional<Loan> loanOpt = loanRepository.findById(loanId);
-        if (loanOpt.isPresent()) {
-            Loan loan = loanOpt.get();
-            loan.getReservations().add(reservation);
-            return loanRepository.save(loan);
-        }
-        return null;
     }
 
     public long getLoansCount() {

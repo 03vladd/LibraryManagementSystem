@@ -3,147 +3,181 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="${loan.id != null ? 'Edit Loan' : 'Create Loan'}">Form</title>
+    <title th:text="${loan.id != null ? 'Edit Loan' : 'New Loan'}"></title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             padding: 20px;
         }
         .container {
+            max-width: 600px;
+            margin: 0 auto;
             background: white;
             border-radius: 10px;
+            padding: 30px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-            max-width: 500px;
-            width: 100%;
-            padding: 40px;
         }
-        h1 {
-            color: #333;
-            margin-bottom: 30px;
-            text-align: center;
-        }
+        h1 { color: #333; margin-bottom: 25px; }
         .form-group {
             margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
         }
         label {
-            display: block;
-            margin-bottom: 8px;
+            font-weight: 600;
             color: #555;
-            font-weight: 500;
+            margin-bottom: 8px;
+            font-size: 14px;
         }
-        input[type="date"], select {
-            width: 100%;
-            padding: 10px;
+        input[type="text"],
+        input[type="date"],
+        select {
+            padding: 10px 12px;
             border: 1px solid #ddd;
             border-radius: 5px;
             font-size: 14px;
+            font-family: inherit;
         }
-        input[type="date"]:focus, select:focus {
+        input[type="text"]:focus,
+        input[type="date"]:focus,
+        select:focus {
             outline: none;
             border-color: #667eea;
             box-shadow: 0 0 5px rgba(102, 126, 234, 0.3);
         }
-        .multi-select {
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            padding: 5px;
-        }
-        .multi-select option {
-            padding: 5px;
-        }
-        .hint {
+        .error {
+            color: #dc3545;
             font-size: 12px;
-            color: #999;
             margin-top: 5px;
         }
-        .button-group {
+        .checkbox-group {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            background: #f9f9f9;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .checkbox-item:last-child {
+            margin-bottom: 0;
+        }
+        input[type="checkbox"] {
+            margin-right: 10px;
+            cursor: pointer;
+            accent-color: #667eea;
+        }
+        .checkbox-item label {
+            margin-bottom: 0;
+            margin-left: 0;
+            cursor: pointer;
+            font-weight: normal;
+        }
+        .form-actions {
             display: flex;
             gap: 10px;
             margin-top: 30px;
         }
-        button, .btn {
+        .btn {
             flex: 1;
             padding: 12px;
             border: none;
             border-radius: 5px;
-            font-size: 14px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s;
         }
-        .btn-save {
+        .btn-primary {
             background: #667eea;
             color: white;
         }
-        .btn-save:hover {
+        .btn-primary:hover {
             background: #5568d3;
-            transform: translateY(-2px);
         }
-        .btn-cancel {
-            background: #e9ecef;
-            color: #333;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
         }
-        .btn-cancel:hover {
-            background: #dee2e6;
+        .btn-secondary:hover {
+            background: #5a6268;
         }
-        .error {
-            color: #dc3545;
-            font-size: 13px;
-            margin-top: 5px;
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
         }
     </style>
 </head>
 <body>
 <div class="container">
-    <h1 th:text="${loan.id != null ? 'Edit Loan' : 'Create New Loan'}"></h1>
+    <h1 th:text="${loan.id != null ? 'Edit Loan' : 'New Loan'}"></h1>
 
-    <form th:object="${loan}"
-          th:action="${loan.id != null ? '/loans/' + loan.id : '/loans'}"
-          method="post">
+    <form th:action="${loan.id != null ? '/loans/' + loan.id : '/loans'}" method="post" th:object="${loan}">
 
-        <div class="form-group">
-            <label for="date">Loan Date *</label>
-            <input type="date" id="date" th:field="*{date}" required>
-            <div class="error" th:if="${#fields.hasErrors('date')}" th:errors="*{date}"></div>
+        <div th:if="${#fields.hasErrors()}" class="alert">
+            <strong>Please fix the following errors:</strong>
+            <ul>
+                <li th:each="error : ${#fields.errors('*')}" th:text="${error}"></li>
+            </ul>
         </div>
 
+        <!-- Member Selection -->
         <div class="form-group">
             <label for="member">Member *</label>
-            <select id="member" th:field="*{member.id}" required>
-                <option value="">-- Select a Member --</option>
-                <option th:each="m : ${members}"
-                        th:value="${m.id}"
-                        th:text="${m.name}"></option>
+            <select id="member" name="member" th:field="*{member}" required>
+                <option value="">-- Select a member --</option>
+                <option th:each="m : ${members}" th:value="${m.id}" th:text="${m.name}"></option>
             </select>
             <div class="error" th:if="${#fields.hasErrors('member')}" th:errors="*{member}"></div>
         </div>
 
+        <!-- Date -->
         <div class="form-group">
-            <label for="items">Readable Items</label>
-            <select id="items" th:field="*{items}" multiple class="multi-select">
-                <option th:each="item : ${items}"
-                        th:value="${item.id}"
-                        th:text="${item.title}"></option>
-            </select>
-            <div class="hint">Hold Ctrl (Cmd on Mac) to select multiple items</div>
-            <div class="error" th:if="${#fields.hasErrors('items')}" th:errors="*{items}"></div>
+            <label for="date">Loan Date *</label>
+            <input type="date" id="date" name="date" th:field="*{date}" required>
+            <div class="error" th:if="${#fields.hasErrors('date')}" th:errors="*{date}"></div>
         </div>
 
-        <div class="button-group">
-            <button type="submit" class="btn-save">
-                <span th:text="${loan.id != null ? 'Update Loan' : 'Create Loan'}"></span>
-            </button>
-            <a href="/loans" class="btn btn-cancel">Cancel</a>
+        <!-- Status -->
+        <div class="form-group">
+            <label for="status">Status *</label>
+            <select id="status" name="status" th:field="*{status}" required>
+                <option value="">-- Select status --</option>
+                <option th:each="s : ${statuses}" th:value="${s}" th:text="${s}"></option>
+            </select>
+            <div class="error" th:if="${#fields.hasErrors('status')}" th:errors="*{status}"></div>
+        </div>
+
+        <!-- Items Selection -->
+        <div class="form-group">
+            <label>Items</label>
+            <div class="checkbox-group" th:if="${!items.isEmpty()}">
+                <div class="checkbox-item" th:each="item : ${items}">
+                    <input type="checkbox"
+                           th:id="'item_' + ${item.id}"
+                           name="itemIds"
+                           th:value="${item.id}"
+                           th:checked="${selectedItemIds != null && selectedItemIds.contains(item.id)}">
+                    <label th:for="'item_' + ${item.id}" th:text="${item.title} + ' (ID: ' + ${item.id} + ')'"></label>
+                </div>
+            </div>
+            <div th:if="${items.isEmpty()}" style="color: #999; font-style: italic;">No items available</div>
+        </div>
+
+        <!-- Form Actions -->
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary" th:text="${loan.id != null ? 'Update Loan' : 'Create Loan'}"></button>
+            <a href="/loans" class="btn btn-secondary" style="text-decoration: none; text-align: center;">Cancel</a>
         </div>
     </form>
 </div>

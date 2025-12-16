@@ -36,11 +36,66 @@
             font-weight: 600;
         }
         .btn-primary:hover { background: #5568d3; }
-        .no-data {
-            text-align: center;
-            padding: 40px;
-            color: #999;
+        .filter-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            border: 1px solid #e0e0e0;
         }
+        .filter-title {
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        .filter-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr auto;
+            gap: 15px;
+            align-items: end;
+            margin-bottom: 15px;
+        }
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+        }
+        .filter-group label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #666;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+        .filter-group input,
+        .filter-group select {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .filter-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        .filter-btn:hover { background: #5568d3; }
+        .reset-btn {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .reset-btn:hover { background: #5a6268; }
         table {
             width: 100%;
             border-collapse: collapse;
@@ -53,6 +108,21 @@
             color: #333;
             font-weight: 600;
             border-bottom: 2px solid #ddd;
+            cursor: pointer;
+            user-select: none;
+        }
+        th:hover {
+            background: #e9ecef;
+        }
+        th a {
+            color: #333;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        th a:hover {
+            color: #667eea;
         }
         td {
             padding: 12px;
@@ -60,7 +130,7 @@
         }
         tr:hover { background: #f8f9fa; }
         .actions { display: flex; gap: 10px; }
-        .btn-edit, .btn-delete {
+        .btn-edit, .btn-delete, .btn-details {
             padding: 6px 12px;
             border-radius: 4px;
             text-decoration: none;
@@ -79,15 +149,116 @@
             color: white;
         }
         .btn-delete:hover { background: #c82333; }
+        .btn-details {
+            background: #17a2b8;
+            color: white;
+        }
+        .btn-details:hover { background: #138496; }
+        .no-data {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .sort-indicator {
+            font-size: 12px;
+            margin-left: 5px;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .status-active {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .status-returned {
+            background-color: #d1ecf1;
+            color: #0c5460;
+        }
+        .status-overdue {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        @media (max-width: 768px) {
+            .filter-row {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
+<nav style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 15px 20px; margin-bottom: 20px; border-radius: 0; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+    <div style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center;">
+        <h2 style="color: white; margin: 0; font-size: 20px;">LMS</h2>
+        <a href="/" style="background: white; color: #667eea; padding: 8px 16px; border-radius: 4px; text-decoration: none; font-weight: 600; transition: all 0.3s;"
+           onmouseover="this.style.background='#f0f0f0'"
+           onmouseout="this.style.background='white'">
+            ← Home
+        </a>
+    </div>
+</nav>
+
 <div class="container">
     <div class="header">
         <h1>Loans</h1>
         <a href="/loans/new" class="btn-primary">+ New Loan</a>
     </div>
 
+    <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
+
+    <!-- Filter Section -->
+    <div class="filter-section">
+        <div class="filter-title">🔍 Filter & Sort</div>
+        <form method="get" action="/loans">
+            <div class="filter-row">
+                <div class="filter-group">
+                    <label>Member Name</label>
+                    <input type="text" name="memberName" th:value="${filterMemberName}" placeholder="e.g. John">
+                </div>
+                <div class="filter-group">
+                    <label>Status</label>
+                    <select name="status">
+                        <option value="">-- All Statuses --</option>
+                        <option th:each="s : ${statuses}" th:value="${s}" th:text="${s}" th:selected="${filterStatus == s}"></option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Sort By</label>
+                    <select name="sortBy">
+                        <option value="id" th:selected="${sortBy == 'id'}">ID</option>
+                        <option value="date" th:selected="${sortBy == 'date'}">Date</option>
+                        <option value="status" th:selected="${sortBy == 'status'}">Status</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Order</label>
+                    <select name="sortOrder">
+                        <option value="asc" th:selected="${sortOrder == 'asc'}">Ascending</option>
+                        <option value="desc" th:selected="${sortOrder == 'desc'}">Descending</option>
+                    </select>
+                </div>
+                <div>
+                    <button type="submit" class="filter-btn">Search</button>
+                    <a href="/loans" class="reset-btn">Reset</a>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Table -->
     <div th:if="${loans.isEmpty()}" class="no-data">
         <p>No loans found. Click "New Loan" to create one.</p>
     </div>
@@ -95,21 +266,38 @@
     <table th:unless="${loans.isEmpty()}">
         <thead>
         <tr>
-            <th>ID</th>
+            <th>
+                <a th:href="@{/loans(memberName=${filterMemberName},status=${filterStatus},sortBy='id',sortOrder=${sortBy == 'id' && sortOrder == 'asc' ? 'desc' : 'asc'})}">
+                    ID <span class="sort-indicator" th:if="${sortBy == 'id'}" th:text="${sortOrder == 'asc' ? '▲' : '▼'}"></span>
+                </a>
+            </th>
             <th>Member</th>
-            <th>Date</th>
-            <th>Items Count</th>
+            <th>
+                <a th:href="@{/loans(memberName=${filterMemberName},status=${filterStatus},sortBy='date',sortOrder=${sortBy == 'date' && sortOrder == 'asc' ? 'desc' : 'asc'})}">
+                    Date <span class="sort-indicator" th:if="${sortBy == 'date'}" th:text="${sortOrder == 'asc' ? '▲' : '▼'}"></span>
+                </a>
+            </th>
+            <th>
+                <a th:href="@{/loans(memberName=${filterMemberName},status=${filterStatus},sortBy='status',sortOrder=${sortBy == 'status' && sortOrder == 'asc' ? 'desc' : 'asc'})}">
+                    Status <span class="sort-indicator" th:if="${sortBy == 'status'}" th:text="${sortOrder == 'asc' ? '▲' : '▼'}"></span>
+                </a>
+            </th>
+            <th>Items</th>
             <th>Actions</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="loan : ${loans}">
             <td th:text="${loan.id}"></td>
-            <td th:text="${loan.member != null ? loan.member.name : 'N/A'}"></td>
+            <td th:text="${loan.member.name}"></td>
             <td th:text="${loan.date}"></td>
-            <td th:text="${loan.items != null ? loan.items.size() : 0}"></td>
+            <td>
+                <span th:class="'status-badge status-' + ${loan.status.toString().toLowerCase()}" th:text="${loan.status}"></span>
+            </td>
+            <td th:text="${loan.items.size()}"></td>
             <td>
                 <div class="actions">
+                    <a th:href="@{/loans/{id}/details(id=${loan.id})}" class="btn-details">Details</a>
                     <a th:href="@{/loans/{id}/edit(id=${loan.id})}" class="btn-edit">Edit</a>
                     <form th:action="@{/loans/{id}/delete(id=${loan.id})}" method="post" style="display: inline;">
                         <button type="submit" class="btn-delete" onclick="return confirm('Are you sure?')">Delete</button>

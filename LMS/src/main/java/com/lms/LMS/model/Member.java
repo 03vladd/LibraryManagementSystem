@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,9 +33,11 @@ public class Member {
 
     @ManyToOne
     @JoinColumn(name = "library_id")
+    @ToString.Exclude
     private Library library;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
     private List<Loan> loans = new ArrayList<>();
 
     public Member(String name, String address, Library library) {
