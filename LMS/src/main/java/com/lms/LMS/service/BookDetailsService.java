@@ -1,8 +1,8 @@
 package com.lms.LMS.service;
 
-import com.lms.LMS.model.BookAuthor;
 import com.lms.LMS.model.BookDetails;
 import com.lms.LMS.repo.BookDetailsRepository;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,28 +24,36 @@ public class BookDetailsService {
         return bookDetailsRepository.findAll();
     }
 
+    public List<BookDetails> getFilteredAndSortedBooks(String title, String sortBy, String sortOrder) {
+        Sort.Direction direction = "desc".equalsIgnoreCase(sortOrder) ? Sort.Direction.DESC : Sort.Direction.ASC;
+        Sort sort = Sort.by(direction, sortBy != null && !sortBy.isEmpty() ? sortBy : "id");
+
+        if (title == null || title.isEmpty()) {
+            return bookDetailsRepository.findAll(sort);
+        }
+
+        return bookDetailsRepository.findByTitleContainingIgnoreCase(title, sort);
+    }
+
     public Optional<BookDetails> getBookById(Long id) {
         return bookDetailsRepository.findById(id);
     }
 
     public void deleteBook(Long id) {
-        bookDetailsRepository.deleteById(id);
+        Optional<BookDetails> bookOpt = bookDetailsRepository.findById(id);
+        if (bookOpt.isPresent()) {
+            BookDetails book = bookOpt.get();
+            boolean hasActiveLoans = book.getCopies().stream()
+                    .anyMatch(copy -> copy.getLoan() != null);
+            if (hasActiveLoans) {
+                throw new RuntimeException("Cannot delete book with active loans");
+            }
+            bookDetailsRepository.deleteById(id);
+        }
     }
 
     public List<BookDetails> searchBooksByTitle(String title) {
-        return bookDetailsRepository.findAll().stream()
-                .filter(b -> b.getTitle().toLowerCase().contains(title.toLowerCase()))
-                .toList();
-    }
-
-    public BookDetails addAuthorToBook(Long bookId, BookAuthor bookAuthor) {
-        Optional<BookDetails> bookOpt = bookDetailsRepository.findById(bookId);
-        if (bookOpt.isPresent()) {
-            BookDetails book = bookOpt.get();
-            book.getBookAuthors().add(bookAuthor);
-            return bookDetailsRepository.save(book);
-        }
-        return null;
+        return bookDetailsRepository.findByTitleContainingIgnoreCase(title, Sort.by("title"));
     }
 
     public long getBooksCount() {

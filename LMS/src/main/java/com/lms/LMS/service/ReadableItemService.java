@@ -1,8 +1,9 @@
 package com.lms.LMS.service;
 
+import com.lms.LMS.exception.EntityDeletionException;
+import com.lms.LMS.model.LoanStatus;
 import com.lms.LMS.model.ReadableItemStatus;
 import com.lms.LMS.model.ReadableItems;
-import com.lms.LMS.repo.ReadableItemsRepository;
 import com.lms.LMS.repo.ReadableItemsRepository;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +31,17 @@ public class ReadableItemService {
     }
 
     public void deleteReadableItem(Long id) {
-        readableItemRepository.deleteById(id);
+        Optional<ReadableItems> itemOpt = readableItemRepository.findById(id);
+        if (itemOpt.isPresent()) {
+            ReadableItems item = itemOpt.get();
+
+            // Check if item has an active loan
+            if (item.getLoan() != null && item.getLoan().getStatus() == LoanStatus.ACTIVE) {
+                throw new EntityDeletionException("Cannot delete readable item with active loan");
+            }
+
+            readableItemRepository.deleteById(id);
+        }
     }
 
     public List<ReadableItems> getItemsByStatus(ReadableItemStatus status) {

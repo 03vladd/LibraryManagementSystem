@@ -1,11 +1,14 @@
 package com.lms.LMS.controller;
 
+import com.lms.LMS.exception.EntityDeletionException;
 import com.lms.LMS.model.Reservation;
 import com.lms.LMS.service.ReservationService;
 import com.lms.LMS.service.LoanService;
 import com.lms.LMS.service.ReadableItemService;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -49,21 +52,37 @@ public class ReservationController {
     }
 
     @PostMapping
-    public String createReservation(@ModelAttribute Reservation reservation) {
+    public String createReservation(@Valid @ModelAttribute Reservation reservation, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("loans", loanService.getAllLoans());
+            model.addAttribute("items", readableItemService.getAllReadableItems());
+            return "reservation/form";
+        }
         reservationService.saveReservation(reservation);
         return "redirect:/reservations";
     }
 
     @PostMapping("/{id}")
-    public String updateReservation(@PathVariable Long id, @ModelAttribute Reservation reservation) {
+    public String updateReservation(@PathVariable Long id, @Valid @ModelAttribute Reservation reservation, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("loans", loanService.getAllLoans());
+            model.addAttribute("items", readableItemService.getAllReadableItems());
+            return "reservation/form";
+        }
         reservation.setId(id);
         reservationService.saveReservation(reservation);
         return "redirect:/reservations";
     }
 
     @PostMapping("/{id}/delete")
-    public String deleteReservation(@PathVariable Long id) {
-        reservationService.deleteReservation(id);
-        return "redirect:/reservations";
+    public String deleteReservation(@PathVariable Long id, Model model) {
+        try {
+            reservationService.deleteReservation(id);
+            return "redirect:/reservations";
+        } catch (EntityDeletionException e) {
+            model.addAttribute("reservations", reservationService.getAllReservations());
+            model.addAttribute("error", e.getMessage());
+            return "reservation/index";
+        }
     }
 }

@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import lombok.ToString;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "readable_items")
 @Data
@@ -30,4 +33,9 @@ public class ReadableItems {
     @JoinColumn(name = "library_id")
     @ToString.Exclude
     private Library library;
+
+    @ManyToOne
+    @JoinColumn(name = "loan_id")
+    @ToString.Exclude
+    private Loan loan;
 }

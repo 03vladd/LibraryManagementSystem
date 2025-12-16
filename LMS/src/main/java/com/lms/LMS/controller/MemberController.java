@@ -1,10 +1,13 @@
 package com.lms.LMS.controller;
 
+import com.lms.LMS.exception.EntityDeletionException;
 import com.lms.LMS.model.Member;
 import com.lms.LMS.service.MemberService;
 import com.lms.LMS.service.LibraryService;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -21,9 +24,25 @@ public class MemberController {
     }
 
     @GetMapping
-    public String listMembers(Model model) {
-        model.addAttribute("members", memberService.getAllMembers());
+    public String listMembers(@RequestParam(required = false) String name,
+                              @RequestParam(required = false) String email,
+                              @RequestParam(defaultValue = "id") String sortBy,
+                              @RequestParam(defaultValue = "asc") String sortOrder,
+                              Model model) {
+        model.addAttribute("members", memberService.getFilteredAndSortedMembers(name, email, sortBy, sortOrder));
+        model.addAttribute("filterName", name);
+        model.addAttribute("filterEmail", email);
+        model.addAttribute("sortBy", sortBy);
+        model.addAttribute("sortOrder", sortOrder);
         return "member/index";
+    }
+
+    @GetMapping("/{id}/details")
+    public String showMemberDetails(@PathVariable Long id, Model model) {
+        memberService.getMemberById(id).ifPresent(member -> {
+            model.addAttribute("member", member);
+        });
+        return "member/details";
     }
 
     @GetMapping("/new")
@@ -43,21 +62,35 @@ public class MemberController {
     }
 
     @PostMapping
-    public String createMember(@ModelAttribute Member member) {
+    public String createMember(@Valid @ModelAttribute Member member, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("libraries", libraryService.getAllLibraries());
+            return "member/form";
+        }
         memberService.saveMember(member);
         return "redirect:/members";
     }
 
     @PostMapping("/{id}")
-    public String updateMember(@PathVariable Long id, @ModelAttribute Member member) {
+    public String updateMember(@PathVariable Long id, @Valid @ModelAttribute Member member, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("libraries", libraryService.getAllLibraries());
+            return "member/form";
+        }
         member.setId(id);
         memberService.saveMember(member);
         return "redirect:/members";
     }
 
     @PostMapping("/{id}/delete")
-    public String deleteMember(@PathVariable Long id) {
-        memberService.deleteMember(id);
-        return "redirect:/members";
+    public String deleteMember(@PathVariable Long id, Model model) {
+        try {
+            memberService.deleteMember(id);
+            return "redirect:/members";
+        } catch (Exception e) {
+            model.addAttribute("members", memberService.getAllMembers());
+            model.addAttribute("error", e.getMessage());
+            return "member/index";
+        }
     }
 }

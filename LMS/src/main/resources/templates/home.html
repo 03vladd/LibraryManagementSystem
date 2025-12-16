@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Management System - Home</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .navbar {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .navbar h1 {
+            color: #667eea;
+            font-size: 28px;
+            font-weight: 700;
+        }
+        .navbar-links {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .nav-link {
+            padding: 10px 18px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+        .nav-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        .hero {
+            background: white;
+            padding: 50px 40px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            text-align: center;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+        }
+        .hero h2 {
+            color: #2c3e50;
+            font-size: 36px;
+            margin-bottom: 15px;
+        }
+        .hero p {
+            color: #7f8c8d;
+            font-size: 16px;
+            margin-bottom: 30px;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        .stat-card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: all 0.3s ease;
+            border-left: 4px solid #667eea;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+        }
+        .stat-card.libraries { border-left-color: #17a2b8; }
+        .stat-card.members { border-left-color: #007bff; }
+        .stat-card.loans { border-left-color: #6f42c1; }
+        .stat-card.authors { border-left-color: #ff9800; }
+        .stat-card.books { border-left-color: #28a745; }
+        .stat-card.magazines { border-left-color: #f5576c; }
+        .stat-card.reservations { border-left-color: #ffc107; }
+        .stat-card.items { border-left-color: #20c997; }
+        .stat-icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+        .stat-number {
+            font-size: 32px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        .stat-label {
+            color: #7f8c8d;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .stat-card a {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 8px 16px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .stat-card a:hover {
+            background: #764ba2;
+        }
+        .quick-actions {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .quick-actions h3 {
+            color: #2c3e50;
+            margin-bottom: 25px;
+            font-size: 22px;
+        }
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+        }
+        .action-btn {
+            padding: 18px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
+        }
+        .action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.6);
+        }
+        .action-btn.primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .action-btn.secondary { background: linear-gradient(135deg, #17a2b8 0%, #138496 100%); }
+        .action-btn.success { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); }
+        .action-btn.danger { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .action-btn.warning { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+        .action-btn.info { background: linear-gradient(135deg, #ff9800 0%, #ffb74d 100%); }
+        .recent-section {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .recent-section h3 {
+            color: #2c3e50;
+            margin-bottom: 25px;
+            font-size: 22px;
+        }
+        .recent-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .recent-table th {
+            background: #f8f9fa;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #2c3e50;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        .recent-table td {
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+            color: #2c3e50;
+        }
+        .recent-table tbody tr:hover {
+            background: #f9f9f9;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .status-active {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .status-returned {
+            background-color: #d1ecf1;
+            color: #0c5460;
+        }
+        .status-overdue {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .empty-message {
+            text-align: center;
+            padding: 40px;
+            color: #7f8c8d;
+            font-style: italic;
+        }
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 20px;
+            }
+            .navbar-links {
+                width: 100%;
+            }
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .hero h2 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- Navigation Bar -->
+    <div class="navbar">
+        <h1>📚 Library Management System</h1>
+        <div class="navbar-links">
+            <a href="/libraries" class="nav-link">🏛️ Libraries</a>
+            <a href="/members" class="nav-link">👥 Members</a>
+            <a href="/loans" class="nav-link">📋 Loans</a>
+            <a href="/authors" class="nav-link">✍️ Authors</a>
+            <a href="/books" class="nav-link">📚 Books</a>
+            <a href="/magazines" class="nav-link">📰 Magazines</a>
+            <a href="/reservations" class="nav-link">🔖 Reservations</a>
+            <a href="/readableitems" class="nav-link">📄 Items</a>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <div class="hero">
+        <h2>Welcome to Your Library Management System</h2>
+        <p>Efficiently manage libraries, members, loans, and resources all in one place</p>
+    </div>
+
+    <!-- Statistics Grid -->
+    <div class="stats-grid">
+        <div class="stat-card libraries">
+            <div class="stat-icon">🏛️</div>
+            <div class="stat-number" th:text="${librariesCount}">0</div>
+            <div class="stat-label">Libraries</div>
+            <a href="/libraries">View All</a>
+        </div>
+
+        <div class="stat-card members">
+            <div class="stat-icon">👥</div>
+            <div class="stat-number" th:text="${membersCount}">0</div>
+            <div class="stat-label">Members</div>
+            <a href="/members">View All</a>
+        </div>
+
+        <div class="stat-card loans">
+            <div class="stat-icon">📋</div>
+            <div class="stat-number" th:text="${loansCount}">0</div>
+            <div class="stat-label">Loans</div>
+            <a href="/loans">View All</a>
+        </div>
+
+        <div class="stat-card authors">
+            <div class="stat-icon">✍️</div>
+            <div class="stat-number" th:text="${authorsCount}">0</div>
+            <div class="stat-label">Authors</div>
+            <a href="/authors">View All</a>
+        </div>
+
+        <div class="stat-card books">
+            <div class="stat-icon">📚</div>
+            <div class="stat-number" th:text="${booksCount}">0</div>
+            <div class="stat-label">Books</div>
+            <a href="/books">View All</a>
+        </div>
+
+        <div class="stat-card magazines">
+            <div class="stat-icon">📰</div>
+            <div class="stat-number" th:text="${magazinesCount}">0</div>
+            <div class="stat-label">Magazines</div>
+            <a href="/magazines">View All</a>
+        </div>
+
+        <div class="stat-card reservations">
+            <div class="stat-icon">🔖</div>
+            <div class="stat-number" th:text="${reservationsCount}">0</div>
+            <div class="stat-label">Reservations</div>
+            <a href="/reservations">View All</a>
+        </div>
+
+        <div class="stat-card items">
+            <div class="stat-icon">📄</div>
+            <div class="stat-number" th:text="${itemsCount}">0</div>
+            <div class="stat-label">Readable Items</div>
+            <a href="/readableitems">View All</a>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="quick-actions">
+        <h3>Quick Actions</h3>
+        <div class="actions-grid">
+            <a href="/libraries/new" class="action-btn primary">+ New Library</a>
+            <a href="/members/new" class="action-btn secondary">+ New Member</a>
+            <a href="/loans/new" class="action-btn success">+ New Loan</a>
+            <a href="/authors/new" class="action-btn warning">+ New Author</a>
+            <a href="/books/new" class="action-btn info">+ New Book</a>
+            <a href="/magazines/new" class="action-btn danger">+ New Magazine</a>
+            <a href="/reservations/new" class="action-btn primary">+ New Reservation</a>
+            <a href="/readableitems/new" class="action-btn secondary">+ New Item</a>
+        </div>
+    </div>
+
+    <!-- Recent Loans Section -->
+    <div class="recent-section">
+        <h3>Recent Loans</h3>
+        <div th:if="${recentLoans.isEmpty()}" class="empty-message">
+            No loans yet. Create one to get started!
+        </div>
+        <table class="recent-table" th:unless="${recentLoans.isEmpty()}">
+            <thead>
+            <tr>
+                <th>Loan ID</th>
+                <th>Member</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Items</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="loan : ${recentLoans}">
+                <td th:text="${loan.id}">N/A</td>
+                <td th:text="${loan.member.name}">N/A</td>
+                <td th:text="${loan.date}">N/A</td>
+                <td>
+                        <span th:class="'status-badge status-' + ${loan.status.toString().toLowerCase()}"
+                              th:text="${loan.status}">N/A</span>
+                </td>
+                <td th:text="${loan.items.size()}">0</td>
+                <td>
+                    <a th:href="@{/loans/{id}/details(id=${loan.id})}" class="nav-link">Details</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>
