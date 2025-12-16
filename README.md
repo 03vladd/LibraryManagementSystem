@@ -1,35 +1,40 @@
-# Library Management System - Project 3
+# Library Management System - Project v4
 
 ## Project Overview
-This is a comprehensive Library Management System built with Spring Boot featuring persistent JSON file storage, complete CRUD operations through a web interface, and proper OOP architecture following MVC patterns.
+This is a comprehensive Library Management System built with Spring Boot featuring MySQL database persistence with JPA/Hibernate, complete CRUD operations through a professional web interface, automatic loan status management, and proper OOP architecture following MVC patterns.
 
 *Course:* Object-Oriented Programming in Java  
-*Project:* Phase 3 - JSON Persistence & Full Web UI  
-*Team Members:* Vlad & Rares  
-*GitHub:* https://github.com/03vladd/Java.git
+*Project:* Phase 4 - MySQL Database & Advanced Features  
+*GitHub:* https://github.com/03vladd/LibraryManagementSystem
 
 ---
 
 ## Key Features
 
-### ✅ Completed in Project 3
-- *JSON File Persistence* - All data saved to JSON files automatically
-- *Generic Repository Pattern* - InFileRepo handles all entity types
+### ✅ Completed in Project 4
+- *MySQL Database Persistence* - All data persisted with JPA/Hibernate
+- *Spring Data JPA* - Repository layer with automatic query generation
 - *Complete CRUD Web Interface* - Create, Read, Update, Delete for all entities
-- *Thymeleaf Templates* - Professional UI with Bootstrap-style styling
-- *Entity Relationships* - Book-Author junction table support
-- *Lombok Integration* - Reduced boilerplate with annotations
-- *Jackson Serialization* - Automatic JSON conversion
+- *Thymeleaf Templates* - Professional UI with gradient styling and navigation
+- *Entity Relationships* - OneToMany, ManyToOne, ManyToMany associations with proper mapping
+- *Lombok Integration* - Reduced boilerplate with @Data, @ToString.Exclude
+- *Sort & Filter Functionality* - Dynamic sorting and filtering on all entity lists
+- *Automatic Loan Status Management* - ACTIVE → OVERDUE after 14 days
+- *Loan Return Functionality* - Manual return with status transition to RETURNED
+- *Readable Item Copies* - Books and magazines display proper copy counts
+- *Docker Support* - MySQL containerization with docker-compose
+- *Professional Navigation* - "← Home" navbar on all pages
+- *Data Initialization* - Realistic sample data with 10 entities of each type
 
 ### 📊 Supported Entities (9 total)
-1. *Library* - Library branches and locations
-2. *Member* - Library members and their information
-3. *Author* - Book authors with birth dates and nationality
-4. *BookDetails* - Books with author relationships
-5. *MagazineDetails* - Magazines with publishers
-6. *ReadableItems* - Physical copies of books/magazines
-7. *Loan* - Book loans to members
-8. *Reservation* - Member reservations
+1. *Library* - 10 library branches with contact info
+2. *Member* - 10 members with email/phone and library association
+3. *Author* - 10 authors with birth dates and nationalities
+4. *BookDetails* - 10 books with 2-3 copies each
+5. *MagazineDetails* - 10 magazines with 1-2 copies each
+6. *ReadableItems* - 25-50 physical copies linked to publications
+7. *Loan* - Loan management with automatic overdue detection
+8. *Reservation* - Member reservations for items
 9. *BookAuthor* - Junction table for book-author relationships
 
 ---
@@ -39,18 +44,21 @@ This is a comprehensive Library Management System built with Spring Boot featuri
 - *Java 25*
 - *Spring Boot 3.5.7*
 - *Maven* - Dependency management
+- *MySQL 8.0* - Relational database
+- *JPA/Hibernate* - Object-Relational Mapping
+- *Spring Data JPA* - Repository abstraction
 - *Thymeleaf* - Server-side templating
-- *Jackson* - JSON processing
 - *Lombok* - Code generation
-- *JSON Files* - Data persistence (no database)
+- *Docker* - Container orchestration
+- *docker-compose* - Multi-container setup
 
 ---
 
 ## Project Structure
 
-
+```
 src/main/java/com/lms/LMS/
-├── model/              # Entity classes with Lombok
+├── model/              # JPA Entity classes with Lombok
 │   ├── Library.java
 │   ├── Member.java
 │   ├── Author.java
@@ -59,20 +67,22 @@ src/main/java/com/lms/LMS/
 │   ├── ReadableItems.java
 │   ├── Loan.java
 │   ├── Reservation.java
-│   └── BookAuthor.java
+│   ├── BookAuthor.java
+│   ├── Publication.java      # Abstract parent class
+│   ├── ReadableItemStatus.java
+│   ├── ReservationStatus.java
+│   └── LoanStatus.java
 │
-├── repo/               # Repository layer (JSON persistence)
-│   ├── AbstractRepo.java          # Interface defining CRUD contract
-│   ├── InFileRepo.java            # Generic implementation with JSON I/O
-│   ├── LibraryRepo.java
-│   ├── MemberRepo.java
-│   ├── AuthorRepo.java
-│   ├── BookDetailsRepo.java
-│   ├── MagazineDetailsRepo.java
-│   ├── ReadableItemRepo.java
-│   ├── LoanRepo.java
-│   ├── ReservationRepo.java
-│   └── BookAuthorRepo.java
+├── repo/               # Spring Data JPA Repositories
+│   ├── LibraryRepository.java
+│   ├── MemberRepository.java
+│   ├── AuthorRepository.java
+│   ├── BookDetailsRepository.java
+│   ├── MagazineDetailsRepository.java
+│   ├── ReadableItemRepository.java
+│   ├── LoanRepository.java
+│   ├── ReservationRepository.java
+│   └── BookAuthorRepository.java
 │
 ├── service/            # Business logic layer
 │   ├── LibraryService.java
@@ -82,6 +92,7 @@ src/main/java/com/lms/LMS/
 │   ├── MagazineDetailsService.java
 │   ├── ReadableItemService.java
 │   ├── LoanService.java
+│   ├── LoanStatusService.java    # Automatic status management
 │   ├── ReservationService.java
 │   └── BookAuthorService.java
 │
@@ -96,33 +107,30 @@ src/main/java/com/lms/LMS/
 │   ├── ReservationController.java
 │   └── BookAuthorController.java
 │
-└── LmsApplication.java # Spring Boot entry point
+└── LmsApplication.java # Spring Boot entry point with @EnableScheduling
 
 src/main/resources/
 ├── templates/          # Thymeleaf HTML templates
-│   ├── author/
-│   ├── bookauthor/
-│   ├── bookdetails/
-│   ├── library/
-│   ├── loan/
-│   ├── magazinedetails/
+│   ├── index.html      # Home page with entity links
 │   ├── member/
+│   │   ├── index.html  # List with sort/filter
+│   │   └── form.html   # Create/edit form
+│   ├── loan/
+│   │   ├── index.html  # List with sort/filter
+│   │   ├── form.html   # Create/edit with item selection
+│   │   └── details.html # Loan details with return button
+│   ├── bookdetails/
+│   ├── author/
+│   ├── library/
+│   ├── magazinedetails/
 │   ├── readableitems/
-│   └── reservation/
+│   ├── reservation/
+│   └── bookauthor/
 │
-├── data/              # JSON data files
-│   ├── libraries.json
-│   ├── members.json
-│   ├── authors.json
-│   ├── books.json
-│   ├── magazines.json
-│   ├── readable_items.json
-│   ├── loans.json
-│   ├── reservations.json
-│   └── book_authors.json
-│
-└── application.properties
+└── application.properties  # Database & JPA configuration
 
+docker-compose.yml         # MySQL 8.0 container setup
+```
 
 ---
 
@@ -130,83 +138,258 @@ src/main/resources/
 
 ### 1. Layered Architecture (MVC)
 *Clean separation of concerns:*
-- *Model Layer* - Entity classes representing domain objects
-- *Repository Layer* - Data persistence with generic pattern
-- *Service Layer* - Business logic orchestration
+- *Model Layer* - JPA Entity classes with @Entity, @Embeddable annotations
+- *Repository Layer* - Spring Data JPA repositories with automatic query generation
+- *Service Layer* - Business logic orchestration and data transformation
 - *Controller Layer* - HTTP request/response handling
-- *View Layer* - Thymeleaf templates for user interface
+- *View Layer* - Thymeleaf templates with responsive UI
 
-### 2. Generic Repository Pattern
+### 2. Spring Data JPA Repository Pattern
 
-AbstractRepo<T> (Interface)
+```
+JpaRepository<T, ID>
     ↓
-InFileRepo<T> (Generic Implementation)
+Custom Repository Interface (extends JpaRepository)
     ↓
-Specific Repos (LibraryRepo, MemberRepo, etc.)
-
+Spring provides proxy implementation automatically
+```
 
 *Benefits:*
-- Single implementation for all entity types
-- Automatic ID field resolution via reflection
-- Consistent CRUD operations across all entities
-- Easy to switch persistence layer (e.g., database)
+- Zero boilerplate CRUD implementation
+- Automatic SQL query generation
+- Sort and Pagination support
+- Custom finder methods with query methods
+- Type-safe queries
 
-### 3. CRUD Operations
+### 3. Entity Relationships
+
+**One-to-Many:**
+- Library → ReadableItems
+- Member → Loans
+- Loan → Reservations
+- Author → Books (via BookAuthor)
+
+**Many-to-One:**
+- ReadableItems → Library
+- Loan → Member
+- Reservation → Loan
+
+**Many-to-Many:**
+- Book ↔ Author (via BookAuthor junction table)
+
+All relationships use proper JPA annotations: @OneToMany, @ManyToOne, @ManyToMany
+
+### 4. CRUD Operations
 Each entity supports:
 - *Create* - POST /route → service.save(entity)
-- *Read* - GET /route → service.getAll() or service.getById(id)
-- *Update* - POST /route/{id} → service.update(id, entity)
+- *Read* - GET /route or GET /route/{id}
+- *Update* - POST /route/{id} → service.save(entity)
 - *Delete* - POST /route/{id}/delete → service.delete(id)
 
-### 4. JSON Persistence
-- *InFileRepo* reads/writes JSON files using Jackson
-- *Jackson Module Registration* - Automatic LocalDate/LocalDateTime handling
-- *File-based Storage* - No database required
-- *Automatic Serialization* - All entity fields persisted
+### 5. Sort & Filter Functionality
 
-### 5. SOLID Principles Applied
-- *Single Responsibility* - Each class has one purpose
-- *Open/Closed* - Code open for extension, closed for modification
+```
+Frontend (Thymeleaf)
+    ↓ (Query params: ?sortBy=name&sortOrder=asc&filter=value)
+Controller
+    ↓ (@RequestParam binding)
+Service
+    ↓ (Sort.by(direction, field))
+Repository
+    ↓ (Spring Data generates SQL ORDER BY)
+Database (MySQL)
+    ↓ (Returns sorted results)
+View (Display with sort indicators)
+```
+
+### 6. Automatic Loan Status Management
+
+**Scheduled Task (runs hourly):**
+```
+LoanStatusService.updateOverdueLoans()
+    → Finds all ACTIVE loans
+    → Checks if date > 14 days old
+    → Sets status to OVERDUE
+    → Saves to database
+```
+
+**Manual Return:**
+- User clicks "Return Loan" button
+- Status changes to RETURNED immediately
+- Called before every loan list retrieval
+
+### 7. Circular Reference Prevention
+
+Used `@ToString.Exclude` on bidirectional relationships to prevent StackOverflowError:
+```java
+@Entity
+public class Member {
+    @OneToMany(mappedBy = "member")
+    @ToString.Exclude
+    private List<Loan> loans;
+}
+
+@Entity
+public class Loan {
+    @ManyToOne
+    private Member member;  // No @ToString.Exclude needed here
+}
+```
+
+### 8. SOLID Principles Applied
+- *Single Responsibility* - Each class has one clear purpose
+- *Open/Closed* - New entities don't modify existing code
 - *Liskov Substitution* - BookDetails/MagazineDetails replace Publication
-- *Interface Segregation* - Clean, focused interfaces
-- *Dependency Inversion* - Services depend on abstractions (AbstractRepo)
+- *Interface Segregation* - JpaRepository has focused methods
+- *Dependency Inversion* - Controllers depend on Services, Services depend on Repositories
 
 ---
 
 ## Key Implementation Details
 
-### Generic InFileRepo
-java
-public class InFileRepo<T> implements AbstractRepo<T> {
-    // Handles any entity type using reflection
-    // Automatically manages ID fields
-    // Provides JSON serialization/deserialization
-    // Supports CRUD + custom finder methods
-}
+### Database Configuration
 
+```properties
+spring.datasource.url=jdbc:mysql://localhost:3306/library_management_system
+spring.datasource.username=root
+spring.datasource.password=root
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
+```
+
+**ddl-auto=update:**
+- Creates tables on first run
+- Adds new columns if entities change
+- Preserves existing data between restarts
+- ✅ **Use this for production**
 
 ### Entity Inheritance
 
-Publication (abstract)
-├── BookDetails
-└── MagazineDetails
+```
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+public abstract class Publication {
+    private String id;
+    private String title;
+    @OneToMany
+    private List<ReadableItems> copies;
+}
 
-Subclasses inherit common fields (id, title, copies) while adding specific properties.
+@Entity
+public class BookDetails extends Publication {
+    @OneToMany
+    private List<BookAuthor> bookAuthors;
+}
+
+@Entity
+public class MagazineDetails extends Publication {
+    private String publisher;
+}
+```
 
 ### Lombok Integration
-java
-@Data              // Auto-generates getters/setters
-@NoArgsConstructor // Empty constructor
-@AllArgsConstructor // Constructor with all fields
-public class Library { ... }
 
+```java
+@Entity
+@Data                      // Getters, setters, equals, hashCode, toString
+@NoArgsConstructor         // Default constructor
+@AllArgsConstructor        // Constructor with all fields
+@ToString.Exclude          // Prevent circular references
+public class Loan {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    
+    @ManyToOne
+    private Member member;
+    
+    @OneToMany
+    @ToString.Exclude      // Break bidirectional loop
+    private List<ReadableItems> items;
+}
+```
 
 ### Service Layer Pattern
-Each service:
-1. Injects repository via constructor
-2. Provides business logic methods
-3. Handles entity transformation
-4. Returns Optional for safe null handling
+
+```java
+@Service
+public class LoanService {
+    private final LoanRepository loanRepository;
+    
+    // Constructor injection
+    public LoanService(LoanRepository loanRepository) {
+        this.loanRepository = loanRepository;
+    }
+    
+    public List<Loan> getFilteredAndSortedLoans(String memberName, String status, 
+                                                 String sortBy, String sortOrder) {
+        Sort.Direction direction = "desc".equalsIgnoreCase(sortOrder) 
+            ? Sort.Direction.DESC 
+            : Sort.Direction.ASC;
+        Sort sort = Sort.by(direction, sortBy);
+        return loanRepository.findAll(sort);  // Spring Data handles SQL
+    }
+}
+```
+
+### LoanStatusService (Automatic Updates)
+
+```java
+@Service
+public class LoanStatusService {
+    private static final long LOAN_DURATION_DAYS = 14;
+    
+    @Scheduled(cron = "0 0 * * * *")  // Runs every hour
+    public void updateOverdueLoans() {
+        List<Loan> activeLoans = loanRepository.findByStatus(LoanStatus.ACTIVE);
+        LocalDate today = LocalDate.now();
+        
+        for (Loan loan : activeLoans) {
+            long daysElapsed = ChronoUnit.DAYS.between(loan.getDate(), today);
+            if (daysElapsed > LOAN_DURATION_DAYS) {
+                loan.setStatus(LoanStatus.OVERDUE);
+                loanRepository.save(loan);
+            }
+        }
+    }
+}
+```
+
+---
+
+## Docker Setup
+
+### docker-compose.yml
+```yaml
+version: '3.8'
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: lms-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: library_management_system
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:
+```
+
+### Running with Docker
+
+```bash
+# Start MySQL container
+docker-compose up -d
+
+# Stop container
+docker-compose down
+
+# View logs
+docker-compose logs mysql
+```
 
 ---
 
@@ -215,111 +398,142 @@ Each service:
 ### Prerequisites
 - JDK 25 or higher
 - Maven 3.6+
+- Docker & Docker Compose (for MySQL)
 - Git
 
-### Setup & Execution
+### Local Setup & Execution
 
 1. *Clone the repository:*
-   bash
-   git clone https://github.com/03vladd/Java.git
+   ```bash
+   git clone https://github.com/03vladd/LibraryManagementSystem.git
    cd LibraryManagementSystem/LMS
-   
+   ```
 
-2. *Install dependencies:*
-   bash
+2. *Start MySQL with Docker:*
+   ```bash
+   docker-compose up -d
+   ```
+
+3. *Install dependencies:*
+   ```bash
    mvn clean install
-   
+   ```
 
-3. *Run the application:*
-   bash
+4. *Run the application:*
+   ```bash
    mvn spring-boot:run
-   
+   ```
    Or in IntelliJ: Right-click LmsApplication.java → Run
 
-4. *Access the application:*
+5. *Access the application:*
    - Home: http://localhost:8080/
    - Libraries: http://localhost:8080/libraries
    - Members: http://localhost:8080/members
    - Authors: http://localhost:8080/authors
-   - Books: http://localhost:8080/books
-   - Magazines: http://localhost:8080/magazines
+   - Books: http://localhost:8080/bookdetails
+   - Magazines: http://localhost:8080/magazinedetails
    - Loans: http://localhost:8080/loans
    - Reservations: http://localhost:8080/reservations
-   - Readable Items: http://localhost:8080/ReadableItems
+   - ReadableItems: http://localhost:8080/readableitems
    - Book-Authors: http://localhost:8080/bookauthors
+
+6. *Data Initialization:*
+   - On first run, DataInitializer automatically populates database with 10 of each entity
+   - Realistic data: real author names, library branches, member profiles
+   - Sample loans with varied dates (some OVERDUE)
+   - Disable DataInitializer after first run by commenting @Component
 
 ---
 
 ## Web Interface Features
 
 ### For Each Entity
-✅ *List View* - Display all records in a table
-✅ *Create Form* - Add new entity
+✅ *List View* - Display all records in table with sort/filter
+✅ *Sort Functionality* - Click column headers to sort ascending/descending
+✅ *Filter Functionality* - Text search and dropdown filters
+✅ *Create Form* - Add new entity with validation
 ✅ *Edit Form* - Modify existing entity
 ✅ *Delete Action* - Remove entity with confirmation
-✅ *Responsive Design* - Color-coded tables by entity type
+✅ *Details Page* - View detailed information (Loans only)
+✅ *Responsive Design* - Gradient purple styling, professional UI
+✅ *Navigation* - "← Home" button on all pages
 
 ### Standard CRUD Flow
 
-List Page (GET /)
+```
+List Page (GET /route)
     ↓
-Add New Button → Create Form (GET /new)
+[Create] Button → Create Form (GET /route/new)
     ↓
-Submit Form → Create (POST /)
+Submit Form → Create (POST /route)
     ↓
-Edit Button → Edit Form (GET /{id}/edit)
+[Edit] Button → Edit Form (GET /route/{id}/edit)
     ↓
-Submit Form → Update (POST /{id})
+Submit Form → Update (POST /route/{id})
     ↓
-Delete Button → Delete (POST /{id}/delete)
+[Delete] Button → Delete (POST /route/{id}/delete)
+    ↓
+Back to List
+```
 
+### Loan-Specific Features
+- *Loan Details* - GET /loans/{id}/details (shows due date, remaining days)
+- *Return Loan* - POST /loans/{id}/return (sets status to RETURNED)
+- *Automatic Overdue* - ACTIVE loans > 14 days auto-convert to OVERDUE
+- *Color-coded Status* - Green (Active), Blue (Returned), Red (Overdue)
 
 ---
 
 ## Data Persistence
 
-### JSON File Storage
-- Location: src/main/resources/data/
-- Files: libraries.json, members.json, authors.json, etc.
-- Format: Array of objects with pretty-printing
-- Automatic Backup: Each save overwrites file
+### MySQL Database
+- Host: localhost:3306
+- Database: library_management_system
+- User: root
+- Password: root
+- Schema auto-created by Hibernate on startup
 
-### Sample Data Structure
-json
-[
-  {
-    "id": "lib-001",
-    "name": "Springfield Central Library",
-    "address": "100 Library Lane",
-    "phoneNumber": "+1-555-1001",
-    "email": "springfield@library.local",
-    "readableItems": []
-  }
-]
+### Data Initialization
 
+DataInitializer runs once (if @Component is enabled):
+```java
+@Component
+public class DataInitializer implements CommandLineRunner {
+    @Override
+    public void run(String... args) throws Exception {
+        if (libraryRepository.count() > 0) {
+            return;  // Only run if database is empty
+        }
+        
+        // Create 10 libraries, 10 authors, 10 books, 10 members, etc.
+        // With realistic data and proper relationships
+    }
+}
+```
 
-### Configuration
-properties
-# src/main/resources/application.properties
-spring.application.name=LMS
-app.data.directory=src/main/resources/data
+**To disable after first run:**
+```java
+// @Component  // Commented out - database already initialized
+public class DataInitializer implements CommandLineRunner {
+```
 
+Then restart the app - data persists!
 
 ---
 
 ## Extended Properties (Requirement 5)
 
 ### Author Class
-- birthDate (LocalDate) - Birth date for age tracking
-- nationality (String) - Author's country of origin
+- `birthDate` (LocalDate) - Birth date for historical tracking
+- `nationality` (String) - Author's country of origin
 
 ### Library Class
-- phoneNumber (String) - Contact number
-- email (String) - Email address
+- `phoneNumber` (String) - Contact phone number
+- `email` (String) - Email address
 
 ### Member Class
-- phoneNumber (String) - Contact number
-- email (String) - Email address
+- `phoneNumber` (String) - Contact phone number
+- `email` (String) - Email address
 
 ---
 
@@ -327,20 +541,50 @@ app.data.directory=src/main/resources/data
 
 ### Adding New Features
 
-1. *Create/Modify Model* - Add entity with Lombok annotations
-2. *Create Repository* - Extend InFileRepo for the entity
+1. *Create/Modify Entity* - Add @Entity with JPA annotations
+2. *Create Repository* - Extend JpaRepository
 3. *Create Service* - Implement business logic
-4. *Create Controller* - Add CRUD endpoints
-5. *Create Templates* - Design web interface
-6. *Add JSON File* - Create sample data file
-7. *Test* - Verify CRUD operations work
+4. *Create Controller* - Add request mapping methods
+5. *Create Templates* - Design Thymeleaf views
+6. *Test* - Verify CRUD operations work
+7. *Deploy* - Run with docker-compose
 
 ### Best Practices
-- Always use @Data, @NoArgsConstructor, @AllArgsConstructor on models
+- Always use @Data, @NoArgsConstructor on entities
+- Use @ToString.Exclude for bidirectional relationships
 - Constructor injection for services (no @Autowired)
 - Use Optional<T> for safe null handling
-- Follow REST conventions: GET (read), POST (create/update), POST (delete)
+- Follow REST conventions
 - Consistent URL patterns: /resource, /resource/{id}/edit, /resource/{id}/delete
+- Use @Scheduled for recurring tasks
+
+---
+
+## Advanced Features
+
+### Sort & Filter
+- Backend sorting via Spring Data Sort
+- Dynamic query building
+- URL parameters preserve state (bookmarkable)
+- Works with any sortable field
+
+### Automatic Loan Management
+- Hourly scheduled task checks for overdue loans
+- Manual return button for immediate status change
+- Days remaining display with color coding
+- ACTIVE → OVERDUE automatic transition
+
+### Relationship Management
+- OneToMany relationships with cascade operations
+- ManyToMany junction tables (BookAuthor)
+- Proper foreign key constraints
+- Referential integrity maintained
+
+### Data Validation
+- JPA validation annotations
+- Error handling in forms
+- User-friendly error messages
+- Form value persistence on error
 
 ---
 
@@ -348,147 +592,168 @@ app.data.directory=src/main/resources/data
 
 ### Manual Testing Checklist
 - [ ] Create entity via web form
-- [ ] Verify data saved in JSON file
+- [ ] Verify data persisted in MySQL
 - [ ] Read/list all entities
-- [ ] Edit entity and verify changes persisted
-- [ ] Delete entity and verify removed from JSON
-- [ ] Test with invalid data
-- [ ] Verify relationships (Book-Author)
+- [ ] Edit entity and verify changes
+- [ ] Delete entity and verify removal
+- [ ] Test sorting on each column
+- [ ] Test filtering with various inputs
+- [ ] Create loan and verify copy count
+- [ ] Check if loan becomes OVERDUE after 14+ days
+- [ ] Test manual loan return
+- [ ] Verify relationships (Book-Author, Member-Loan)
 
 ### Data Integrity
 All operations automatically:
-- Generate UUIDs for new entities
-- Persist to JSON files
-- Load from JSON on startup
+- Generate IDs via database sequence
+- Persist to MySQL database
+- Enforce foreign key constraints
+- Validate using JPA annotations
 - Maintain referential integrity
-
----
-
-## Future Enhancements (Phase 4+)
-
-### Database Integration
-- Replace JSON with JPA/Hibernate
-- Add MySQL/PostgreSQL support
-- Implement database migrations
-
-### Advanced Features
-- Search and filtering
-- Pagination
-- Sorting
-- Advanced reports
-- Member fine calculation
-- Overdue notifications
-
-### Security
-- Authentication & authorization
-- User roles (librarian, member)
-- Data validation & sanitization
-- CSRF protection
-
-### Testing
-- Unit tests (JUnit 5)
-- Integration tests
-- End-to-end tests
-- Performance testing
 
 ---
 
 ## Common Issues & Solutions
 
-### Issue: JSON file not found
-*Solution:* Ensure data/ directory exists in src/main/resources/
+### Issue: Database connection refused
+**Solution:** Ensure MySQL is running: `docker-compose up -d`
 
-### Issue: "Entity must have an 'id' field"
-*Solution:* Verify all entities have a String id field with getters/setters
+### Issue: "Table doesn't exist"
+**Solution:** Check ddl-auto setting. Set to `update` or `create` in application.properties
 
-### Issue: NoSuchFieldException on inherited fields
-*Solution:* InFileRepo handles parent class fields via reflection
+### Issue: StackOverflowError in toString()
+**Solution:** Add `@ToString.Exclude` to bidirectional relationship fields
 
-### Issue: Null pointer in lists
-*Solution:* Initialize lists with new ArrayList<>() or set default in Lombok
+### Issue: Null pointer in list display
+**Solution:** Initialize lists with `new ArrayList<>()` in Lombok or entity constructors
 
-### Issue: Date deserialization error
-*Solution:* objectMapper.findAndRegisterModules() registers Jackson date modules
+### Issue: DataInitializer runs every restart
+**Solution:** Comment out `@Component` annotation after first run
+
+### Issue: Thymeleaf "Cannot bind form errors"
+**Solution:** Move error display block **inside** the `<form th:object="...">` tag
+
+### Issue: Loan status not updating
+**Solution:** Ensure @EnableScheduling is in LmsApplication.java
+
+---
+
+## Performance Considerations
+
+### Eager vs Lazy Loading
+- Use `@OneToMany(fetch = FetchType.LAZY)` for large collections
+- Use `@ManyToOne(fetch = FetchType.EAGER)` for required relationships
+- Prevents N+1 query problems
+
+### Indexing
+MySQL automatically indexes:
+- Primary keys (@Id)
+- Foreign keys (@ManyToOne, @OneToMany)
+- Consider adding indexes for frequently filtered fields
+
+### Batch Operations
+For bulk updates, use batch processing in service layer
+
+---
+
+## Future Enhancements (Phase 5+)
+
+### Security & Authentication
+- User authentication (login/logout)
+- Role-based access (Librarian, Member)
+- CSRF protection
+- Input validation & sanitization
+
+### Advanced Features
+- Full-text search across multiple fields
+- Pagination for large result sets
+- Advanced reporting and analytics
+- Member fine calculation
+- Overdue notification emails
+- Reservation queue management
+
+### Testing
+- Unit tests (JUnit 5)
+- Integration tests with TestContainers
+- End-to-end tests (Selenium)
+- Performance testing
+
+### DevOps
+- GitHub Actions for CI/CD
+- Deployment to cloud (AWS, Azure)
+- Kubernetes containerization
+- Automated backups
 
 ---
 
 ## SOLID & Clean Code Principles
 
-✅ *Single Responsibility* - Each class handles one concern
-✅ *Open/Closed* - New entities don't modify existing code
-✅ *Liskov Substitution* - Subclasses substitute parent classes
-✅ *Interface Segregation* - AbstractRepo has focused methods
-✅ *Dependency Inversion* - Services depend on interfaces
-✅ *DRY* - Generic InFileRepo eliminates duplication
-✅ *KISS* - Simple, clear architecture
-✅ *Clean Code* - Consistent naming, documentation
+✅ *Single Responsibility* - Each class has one clear purpose  
+✅ *Open/Closed* - New entities don't modify existing code  
+✅ *Liskov Substitution* - Subclasses substitute parent classes  
+✅ *Interface Segregation* - JpaRepository is focused  
+✅ *Dependency Inversion* - Services depend on interfaces  
+✅ *DRY* - No code duplication  
+✅ *KISS* - Simple, clear architecture  
+✅ *Clean Code* - Consistent naming, documentation  
 
 ---
 
-## Team Contributions
+## Technologies & Versions
 
-*Vlad:*
-- Core architecture design
-- Repository layer implementation (AbstractRepo, InFileRepo)
-- Service layer implementation
-- Controller structure and CRUD endpoints
-- JSON persistence setup
-- Integration testing
-
-*Rares:*
-- Extended model properties
-- Web UI/Thymeleaf templates
-- Front-end styling and layout
-- Data validation and error handling
-- Documentation and README
-
----
-
-## How to Contribute
-
-1. Create a feature branch: git checkout -b feature/your-feature
-2. Make your changes
-3. Commit: git commit -m "Add feature description"
-4. Push: git push origin feature/your-feature
-5. Create a Pull Request
+| Technology | Version | Purpose |
+|-----------|---------|---------|
+| Java | 25 | Programming language |
+| Spring Boot | 3.5.7 | Web framework |
+| Spring Data JPA | 3.5.7 | Database abstraction |
+| Hibernate | 6.4.x | ORM framework |
+| MySQL | 8.0 | Database |
+| Thymeleaf | 3.1.3 | Template engine |
+| Lombok | 1.18.x | Code generation |
+| Docker | Latest | Containerization |
+| Maven | 3.6+ | Build tool |
 
 ---
 
 ## Project Submission
 
 - *Submission Method:* GitHub
-- *Repository:* https://github.com/03vladd/Java.git
-- *Due Date:* Week 8 (Phase 3)
+- *Due Date:* Week 12
 - *Evaluation Criteria:*
   - Code quality and OOP principles
-  - Complete CRUD functionality
-  - JSON persistence working correctly
-  - Web UI fully functional
+  - Complete CRUD functionality with MySQL
+  - Automatic loan status management
+  - Web UI fully functional with sort/filter
+  - Sort and filtering working correctly
+  - Professional UI/UX design
   - Documentation completeness
-  - Team collaboration evidence
+  - Proper error handling
 
 ---
 
 ## Additional Resources
 
-### Spring Boot Documentation
+### Spring Boot & Spring Data
 - https://spring.io/projects/spring-boot
+- https://spring.io/projects/spring-data-jpa
 - https://docs.spring.io/spring-boot/
 
-### Thymeleaf Documentation
+### Thymeleaf
 - https://www.thymeleaf.org/
 
-### Jackson Documentation
-- https://github.com/FasterXML/jackson
+### Hibernate & JPA
+- https://hibernate.org/
+- https://jakarta.ee/specifications/persistence/
 
-### Lombok Documentation
+### MySQL
+- https://dev.mysql.com/doc/
+
+### Docker
+- https://docs.docker.com/
+- https://docs.docker.com/compose/
+
+### Lombok
 - https://projectlombok.org/
-
----
-
-## License
-
-This project is part of an academic course assignment and is provided as-is for educational purposes.
 
 ---
 
@@ -496,11 +761,12 @@ This project is part of an academic course assignment and is provided as-is for 
 
 For questions or issues:
 1. Check this README first
-2. Review the code structure
+2. Review the code structure and comments
 3. Check recent commits in Git history
-4. Contact team members
+4. Review application logs
+5. Verify Docker container is running: `docker-compose ps`
 
 ---
 
-*Last Updated:* November 18, 2025  
-*Version:* 3.0 (JSON Persistence & Full Web UI)
+*Last Updated:* December 16, 2025  
+*Version:* 4.0 (MySQL Database & Advanced Features)
